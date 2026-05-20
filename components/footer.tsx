@@ -28,8 +28,10 @@ const Footer = () => {
           <FaTiktok className="text-gray-500 text-4xl animate-pulse" />
         </a>
       </div>
-      <div className="w-full px-25 justify-center items-center flex flex-col mb-3 ">
-        <p>© {currentYear} Tafadzwa Chiripanyanga</p>
+      <div className="w-full flex-wrap px-25 justify-center items-center flex flex-col mb-3 ">
+        <p className="w-full  text-center flex-wrap justify-center items-center text-[16px] text-gray-500">
+          © {currentYear} Tafadzwa Chiripanyanga
+        </p>
       </div>
     </footer>
   );

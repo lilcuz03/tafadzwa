@@ -44,7 +44,7 @@ const SkillCard = () => {
     },
   ];
   return (
-    <div className="flex flex-row items-center justify-center gap-10 flex-wrap mt-10">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-center justify-center  flex-wrap mt-10">
       {skills.map((skill, index) => (
         <div
           key={index}
