@@ -1,205 +1,146 @@
-// "use client";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import logo from "../public/logo2.png";
-// import { RiMenu3Line } from "react-icons/ri";
-// const Navbar = () => {
-//   const pathname = usePathname();
-
-//   const navItems = [
-//     {
-//       label: "Home",
-//       href: "/",
-//     },
-//     {
-//       label: "Projects",
-//       href: "/Projects",
-//     },
-//     {
-//       label: "Gallery",
-//       href: "/Gallery",
-//     },
-
-//     // {
-//     //   label: "About",
-//     //   href: "/About",
-//     // },
-//   ];
-//   return (
-//     <header className="bg-linear-90 from-black to-cyan-700  w-full h-11 flex  justify-center items-center z-50 sticky top-0">
-//       <nav
-//         aria-label="main navbar"
-//         className="container mx-3 w-full flex justify-between items-center align-middle"
-//       >
-//         <div className="flex w-full justify-center items-center  gap-10 ">
-//           <div className=" flex justify-start items-center h-full  w-full">
-//             <Link
-//               href="/"
-//               className="flex justify-center items-center gap-2"
-//             >
-//               <Image
-//                 src={logo}
-//                 alt="logo"
-//                 width={50}
-//                 height={50}
-//               />
-//               {/* <span className="text-white">Tafadzwa</span> */}
-//             </Link>
-//           </div>
-
-//           <div className=" flex  w-full lg:flex md:flex  items-center    gap-4  ">
-//             {navItems.map((item, index) => (
-//               <Link
-//                 href={item.href}
-//                 key={index}
-//                 className={`${pathname === item.href ? "text-cyan-500" : "text-white"} mx-4 hover:text-cyan-500 transition-colors duration-300 hidden lg:flex md:flex`}
-//               >
-//                 {item.label}
-//               </Link>
-//             ))}
-//             <div className="flex w-full h-full  justify-end">
-//               <RiMenu3Line className="w-8 h-8 lg:hidden md:hidden  " />
-//             </div>
-//           </div>
-//           <div className="col-4 flex justify-end items-center h-full  w-full">
-//             <Link
-//               href="mailto:tafadzwachiri03@outlook.com"
-//               className="flex justify-center items-center gap-2"
-//             >
-//               <div className="px-3 py-1 border border-cyan-500 rounded-md hover:bg-cyan-500 transition-colors duration-300">
-//                 <span className="text-white">Hire Me</span>
-//               </div>
-//               {/* <span className="text-white">Tafadzwa</span> */}
-//             </Link>
-//           </div>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// };
-
-// export default Navbar;
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../public/logo2.png";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
+import { MdEmail } from "react-icons/md";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/Projects" },
+  { label: "Gallery", href: "/Gallery" },
+];
 
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const navItems = [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Projects",
-      href: "/Projects",
-    },
-    {
-      label: "Gallery",
-      href: "/Gallery",
-    },
-  ];
+  // Add a subtle background shift on scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-linear-90 from-black to-cyan-700 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-black/90 backdrop-blur-md border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          : "bg-black border-b border-white/5"
+      }`}
+    >
       <nav
-        aria-label="main navbar"
-        className="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between"
+        aria-label="Main navigation"
+        className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 h-16 flex items-center justify-between"
       >
-        {/* Logo */}
+        {/* ── Logo ─────────────────────────────────────────────────────── */}
         <Link
           href="/"
-          className="flex items-center gap-2 shrink-0"
+          className="flex items-center gap-3 shrink-0 group"
+          aria-label="Go to homepage"
         >
-          <Image
-            src={logo}
-            alt="logo"
-            width={45}
-            height={45}
-            className="object-contain"
-          />
+          <div className="relative w-9 h-9 rounded-full overflow-hidden border border-cyan-500/30 group-hover:border-cyan-400/60 transition-colors duration-300">
+            <Image
+              src={logo}
+              alt="Tafadzwa logo"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+          <span className="hidden sm:block text-sm font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300 tracking-wide">
+            Tafadzwa
+          </span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                transition-all duration-300
-                hover:text-cyan-400
-                ${pathname === item.href ? "text-cyan-400" : "text-white"}
-              `}
-            >
-              {item.label}
-            </Link>
-          ))}
+        {/* ── Desktop nav links ─────────────────────────────────────────── */}
+        <div className="hidden md:flex items-center gap-1">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                  isActive
+                    ? "text-cyan-400 bg-cyan-500/10"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {item.label}
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400" />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Right section */}
+        {/* ── Right section ─────────────────────────────────────────────── */}
         <div className="flex items-center gap-3">
-          {/* Hire me desktop */}
-          <Link
+          {/* Hire Me — desktop */}
+          <a
             href="mailto:tafadzwachiri03@outlook.com"
-            className="hidden md:flex"
+            className="hidden md:inline-flex items-center gap-2 bg-cyan-500 text-black text-sm font-semibold px-5 py-2 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-100"
           >
-            <button className="px-4 py-2 border border-cyan-500 rounded-md text-white hover:bg-cyan-500 transition-all duration-300">
-              Hire Me
-            </button>
-          </Link>
+            <MdEmail className="text-base" />
+            Hire Me
+          </a>
 
-          {/* Mobile button */}
+          {/* Mobile menu toggle */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white md:hidden"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="md:hidden flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white hover:border-cyan-500/40 hover:text-cyan-400 transition-all duration-200"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              <RiCloseLine className="w-7 h-7" />
+              <RiCloseLine className="w-5 h-5" />
             ) : (
-              <RiMenu3Line className="w-7 h-7" />
+              <RiMenu3Line className="w-5 h-5" />
             )}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* ── Mobile menu ───────────────────────────────────────────────────── */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          menuOpen ? "max-h-80 py-4" : "max-h-0"
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          menuOpen ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-5 flex flex-col gap-5 bg-black/90">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              className={`${
-                pathname === item.href ? "text-cyan-400" : "text-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="bg-black/95 border-t border-white/10 px-5 sm:px-8 py-5 flex flex-col gap-1">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "text-cyan-400 bg-cyan-500/10"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
 
-          <Link
+          <a
             href="mailto:tafadzwachiri03@outlook.com"
             onClick={() => setMenuOpen(false)}
+            className="mt-3 inline-flex items-center justify-center gap-2 bg-cyan-500 text-black text-sm font-bold px-5 py-3 rounded-full hover:bg-cyan-400 transition-all duration-200"
           >
-            <button className="w-full py-2 border border-cyan-500 rounded-md text-white hover:bg-cyan-500 transition">
-              Hire Me
-            </button>
-          </Link>
+            <MdEmail className="text-base" />
+            Hire Me
+          </a>
         </div>
       </div>
     </header>
