@@ -155,7 +155,7 @@ const Home = () => {
               <div className="absolute inset-0 rounded-full bg-cyan-500/5" />
 
               {/* Photo */}
-              <div className="w-[210px] h-[210px] sm:w-[280px] sm:h-[280px] lg:w-[385px] lg:h-[385px] rounded-full border border-cyan-500/20 overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.12)]">
+              <div className="w-[210px] h-52.5 sm:w-70 sm:h-[280px] lg:w-[385px] lg:h-[385px] rounded-full border border-cyan-500/20 overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.12)]">
                 <Image
                   src={logo}
                   alt="Tafadzwa Chiripanyanga"
@@ -194,7 +194,7 @@ const Home = () => {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="text-center border border-white/10 rounded-2xl p-6 bg-white/[0.03] hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300"
+              className="text-center border border-white/10 rounded-2xl p-6 bg-white/3 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300"
             >
               <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400">
                 {stat.num}
@@ -228,7 +228,7 @@ const Home = () => {
             return (
               <div
                 key={service.title}
-                className="group flex flex-col gap-4 border border-white/10 rounded-2xl p-6 bg-white/[0.03] hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all duration-300"
+                className="group flex flex-col gap-4 border border-white/10 rounded-2xl p-6 bg-white/3 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300">
                   <Icon className="text-cyan-400 text-lg" />
@@ -286,7 +286,7 @@ const Home = () => {
           {/* Right content */}
           <div className="w-full lg:w-2/3 flex flex-col gap-5 text-gray-400 text-sm sm:text-base leading-7">
             <p>
-              I&apos;m a South African fullstack developer with an NQF Level 5
+              I&apos;m a Zimbabwean fullstack developer with an NQF Level 5
               certification, passionate about building software that solves real
               problems. My work spans mobile apps, responsive websites, and the
               backend logic that connects them.
