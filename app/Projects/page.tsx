@@ -209,7 +209,7 @@ const ProjectsPage = () => {
 
                   {/* Glow orb */}
                   <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full blur-3xl opacity-20 ${
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-40 sm:h-40 rounded-full blur-2xl sm:blur-3xl opacity-10 sm:opacity-15 ${
                       project.accent === "emerald"
                         ? "bg-emerald-400"
                         : project.accent === "violet"
