@@ -66,6 +66,31 @@ const projects: Project[] = [
     status: "Live",
   },
   {
+    title: "TtFRECH",
+    subtitle: "Construction & Renovations Business Site",
+    description:
+      "A full marketing website for TtFRECH Renovators & Investments — a registered construction company serving Durban and KwaZulu-Natal.",
+    longDescription:
+      "TtFRECH needed a premium online presence to showcase their construction services and convert visitors into leads. The site features a full services breakdown, client testimonials, an FAQ section, a blog, and a contact form with Resend-powered email delivery — all built with a luxury navy and gold aesthetic.",
+    tags: [
+      { label: "Next.js", icon: SiNextdotjs },
+      { label: "Tailwind CSS", icon: SiTailwindcss },
+      { label: "TypeScript", icon: SiTypescript },
+    ],
+    category: "Web",
+    liveUrl: "https://www.ttfrech.co.za/",
+    accent: "violet",
+    highlights: [
+      "6 service pages with detail tabs",
+      "Resend contact form integration",
+      "Client reviews & testimonials",
+      "Blog with category filtering",
+      "FAQ with animated accordion",
+      "Fully responsive & SEO ready",
+    ],
+    status: "Live",
+  },
+  {
     title: "Sah Veh",
     subtitle: "Holistic Wellness E-Commerce",
     description:
