@@ -41,31 +41,6 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "BrightFix",
-    subtitle: "Home Appliance Repair Service",
-    description:
-      "A full business website for a home appliance repair company serving Pietermaritzburg and surrounding KwaZulu-Natal areas.",
-    longDescription:
-      "BrightFix needed a professional online presence to convert visitors into repair bookings. The site includes a service catalogue, a multi-step booking form, a customer review section, and a blog — all optimised for local SEO.",
-    tags: [
-      { label: "Next.js", icon: SiNextdotjs },
-      { label: "Tailwind CSS", icon: SiTailwindcss },
-      { label: "TypeScript", icon: SiTypescript },
-    ],
-    category: "Web",
-    liveUrl: "https://brightfix-alpha.vercel.app/",
-    accent: "cyan",
-    highlights: [
-      "Online repair booking form",
-      "Full services catalogue",
-      "Customer reviews section",
-      "Blog / content pages",
-      "WhatsApp & call CTAs",
-      "Local SEO optimised",
-    ],
-    status: "Live",
-  },
-  {
     title: "TtFRECH",
     subtitle: "Construction & Renovations Business Site",
     description:
@@ -91,6 +66,32 @@ const projects: Project[] = [
     status: "Live",
   },
   {
+    title: "BrightFix",
+    subtitle: "Home Appliance Repair Service",
+    description:
+      "A full business website for a home appliance repair company serving Pietermaritzburg and surrounding KwaZulu-Natal areas.",
+    longDescription:
+      "BrightFix needed a professional online presence to convert visitors into repair bookings. The site includes a service catalogue, a multi-step booking form, a customer review section, and a blog — all optimised for local SEO.",
+    tags: [
+      { label: "Next.js", icon: SiNextdotjs },
+      { label: "Tailwind CSS", icon: SiTailwindcss },
+      { label: "TypeScript", icon: SiTypescript },
+    ],
+    category: "Web",
+    liveUrl: "https://brightfix-alpha.vercel.app/",
+    accent: "cyan",
+    highlights: [
+      "Online repair booking form",
+      "Full services catalogue",
+      "Customer reviews section",
+      "Blog / content pages",
+      "WhatsApp & call CTAs",
+      "Local SEO optimised",
+    ],
+    status: "Live",
+  },
+
+  {
     title: "Tawedzerwa Construction",
     subtitle: "Construction & Renovations Business Site",
     description:
@@ -103,8 +104,8 @@ const projects: Project[] = [
       { label: "TypeScript", icon: SiTypescript },
     ],
     category: "Web",
-    liveUrl: "https://www.tawedzerwaconstruction.co.za/",
-    accent: "amber",
+    liveUrl: "https://tawedzerwa.vercel.app/",
+    accent: "orange",
     highlights: [
       "12 service categories with clean descriptions",
       "WhatsApp & contact form lead capture",
