@@ -91,6 +91,31 @@ const projects: Project[] = [
     status: "Live",
   },
   {
+    title: "Tawedzerwa Construction",
+    subtitle: "Construction & Renovations Business Site",
+    description:
+      "A full marketing website for Tawedzerwa Construction — a premium building and renovations company serving Pietermaritzburg, Durban, and greater KwaZulu-Natal.",
+    longDescription:
+      "Tawedzerwa Construction needed a strong online presence to showcase their wide range of building services and convert visitors into leads. The site features a full services breakdown across 12 trade categories, client testimonials, a project gallery, a service areas section, and a WhatsApp-integrated contact form — all built with a clean, premium aesthetic targeting homeowners and businesses across KZN.",
+    tags: [
+      { label: "Next.js", icon: SiNextdotjs },
+      { label: "Tailwind CSS", icon: SiTailwindcss },
+      { label: "TypeScript", icon: SiTypescript },
+    ],
+    category: "Web",
+    liveUrl: "https://www.tawedzerwaconstruction.co.za/",
+    accent: "amber",
+    highlights: [
+      "12 service categories with clean descriptions",
+      "WhatsApp & contact form lead capture",
+      "Project gallery with category labels",
+      "Client testimonials section",
+      "Service areas coverage map section",
+      "Fully responsive & SEO optimised",
+    ],
+    status: "Live",
+  },
+  {
     title: "Sah Veh",
     subtitle: "Holistic Wellness E-Commerce",
     description:
