@@ -233,7 +233,7 @@ export default function Footer() {
               </div>
 
               {/* Tech pills */}
-              <p className="text-[10.5px] font-semibold text-cyan-400/70 uppercase tracking-[0.12em] mb-3">
+              {/* <p className="text-[10.5px] font-semibold text-cyan-400/70 uppercase tracking-[0.12em] mb-3">
                 Built with
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -245,7 +245,7 @@ export default function Footer() {
                     {t}
                   </span>
                 ))}
-              </div>
+              </div> */}
             </div>
           </Reveal>
         </div>
