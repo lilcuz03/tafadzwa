@@ -154,8 +154,8 @@ export default function Footer() {
               </Link>
 
               <p className="text-[13px] text-slate-500 leading-[1.7] font-light max-w-[260px]">
-                Zimbabwean fullstack developer based in Durban, South Africa.
-                Building mobile apps and web platforms that ship.
+                Fullstack developer based in Durban, South Africa. Building
+                mobile apps and web platforms that ship.
               </p>
 
               {/* Socials */}
