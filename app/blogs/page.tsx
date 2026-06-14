@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts } from "@/lib/blog-data";
 import { FiArrowRight, FiClock, FiTag } from "react-icons/fi";
+import Image from "next/image";
 
 // ─── SEO ──────────────────────────────────────────────────────────────────────
 

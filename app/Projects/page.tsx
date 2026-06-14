@@ -1,94 +1,80 @@
-import { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { FiExternalLink, FiGithub, FiArrowUpRight } from "react-icons/fi";
-import { MdEmail } from "react-icons/md";
+import { useEffect, useRef, useState } from "react";
 import {
-  SiNextdotjs,
-  SiTailwindcss,
-  SiTypescript,
-  SiReact,
-  SiFlutter,
-} from "react-icons/si";
+  ArrowUpRight,
+  ArrowLeft,
+  Globe,
+  Hammer,
+  Wrench,
+  Building2,
+  ShoppingBag,
+  Car,
+  Sparkles,
+  Mail,
+  ArrowRight,
+} from "lucide-react";
 
-// ─── SEO ──────────────────────────────────────────────────────────────────────
+// ─── Reveal ────────────────────────────────────────────────────────────────────
 
-export const metadata: Metadata = {
-  title: "Projects | Tafadzwa Chiripanyanga",
-  description:
-    "A selection of real-world web and mobile projects built by Tafadzwa Chiripanyanga — fullstack developer based in South Africa. Specialising in Next.js, React Native, Flutter, and Tailwind CSS.",
-  keywords: [
-    "Tafadzwa Chiripanyanga",
-    "fullstack developer South Africa",
-    "Next.js projects",
-    "React Native developer",
-    "Flutter developer",
-    "web developer portfolio",
-  ],
-  openGraph: {
-    title: "Projects | Tafadzwa Chiripanyanga",
-    description:
-      "Real-world web and mobile projects built by Tafadzwa Chiripanyanga — fullstack developer based in South Africa.",
-    url: "https://tafadzwa.site/Projects",
-    siteName: "Tafadzwa Chiripanyanga",
-    images: [
-      {
-        url: "https://tafadzwa.site/images/hero.png",
-        width: 1200,
-        height: 630,
-        alt: "Tafadzwa Chiripanyanga — Fullstack Developer",
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          obs.disconnect();
+        }
       },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Projects | Tafadzwa Chiripanyanga",
-    description:
-      "Real-world web and mobile projects built by Tafadzwa Chiripanyanga — fullstack developer based in South Africa.",
-    images: ["https://tafadzwa.site/images/hero.png"],
-  },
-  alternates: {
-    canonical: "https://tafadzwa.site/Projects",
-  },
-};
+      { threshold: 0.1 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, shown };
+}
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const { ref, shown } = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
-type Tag = {
-  label: string;
-  icon?: React.ComponentType<{ className?: string }>;
-};
+// ─── Data ──────────────────────────────────────────────────────────────────────
 
-type Project = {
-  title: string;
-  subtitle: string;
-  description: string;
-  tags: Tag[];
-  category: "Web" | "Mobile" | "Fullstack";
-  liveUrl?: string;
-  githubUrl?: string;
-  highlights: string[];
-  status: "Live" | "In Progress" | "Completed";
-  accentColor: "cyan" | "emerald" | "violet" | "orange";
-};
-
-// ─── Project Data ─────────────────────────────────────────────────────────────
-
-const projects: Project[] = [
+const projects = [
   {
-    title: "TtFRECH",
-    subtitle: "Construction & Renovations",
+    num: "01",
+    status: "Live",
+    type: "Construction & Renovations",
+    name: "TtFRECH",
     description:
-      "A premium marketing website for TtFRECH Renovators & Investments — a registered construction company serving Durban and KwaZulu-Natal. Built with a luxury navy and gold aesthetic, the site features a full services breakdown, client testimonials, an FAQ section, a blog, and a contact form with email delivery via Resend.",
-    tags: [
-      { label: "Next.js", icon: SiNextdotjs },
-      { label: "Tailwind CSS", icon: SiTailwindcss },
-      { label: "TypeScript", icon: SiTypescript },
-    ],
-    category: "Web",
-    liveUrl: "https://www.ttfrech.co.za/",
-    accentColor: "violet",
-    highlights: [
+      "A premium online presence for a construction company — full services breakdown, client testimonials, blog, FAQ section, and a Resend-powered contact form. Built with a luxury navy and gold aesthetic.",
+    features: [
       "6 service pages with detail tabs",
       "Resend contact form integration",
       "Client reviews & testimonials",
@@ -96,22 +82,18 @@ const projects: Project[] = [
       "FAQ with animated accordion",
       "Fully responsive & SEO ready",
     ],
-    status: "Live",
+    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
+    url: "https://www.ttfrech.co.za/",
+    icon: Building2,
   },
   {
-    title: "BrightFix",
-    subtitle: "Home Appliance Repair Service",
+    num: "02",
+    status: "Live",
+    type: "Home Appliance Repair Service",
+    name: "BrightFix",
     description:
-      "A professional business website for a home appliance repair company serving Pietermaritzburg and surrounding KwaZulu-Natal areas. The site includes a service catalogue, a multi-step booking form, a customer review section, and a blog — all optimised for local SEO.",
-    tags: [
-      { label: "Next.js", icon: SiNextdotjs },
-      { label: "Tailwind CSS", icon: SiTailwindcss },
-      { label: "TypeScript", icon: SiTypescript },
-    ],
-    category: "Web",
-    liveUrl: "https://brightfix-alpha.vercel.app/",
-    accentColor: "cyan",
-    highlights: [
+      "A professional site that converts visitors into repair bookings. Features a service catalogue, multi-step booking form, customer reviews, and a blog — all optimised for local SEO.",
+    features: [
       "Online repair booking form",
       "Full services catalogue",
       "Customer reviews section",
@@ -119,45 +101,37 @@ const projects: Project[] = [
       "WhatsApp & call CTAs",
       "Local SEO optimised",
     ],
-    status: "Live",
+    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
+    url: "https://brightfix-alpha.vercel.app/",
+    icon: Wrench,
   },
   {
-    title: "Tawedzerwa Construction",
-    subtitle: "Construction & Renovations",
+    num: "03",
+    status: "Live",
+    type: "Construction & Renovations",
+    name: "Tawedzerwa Construction",
     description:
-      "A full marketing website for Tawedzerwa Construction — a premium building and renovations company serving Pietermaritzburg, Durban, and greater KwaZulu-Natal. Features 12 trade service categories, client testimonials, a project gallery, and a WhatsApp-integrated contact form.",
-    tags: [
-      { label: "Next.js", icon: SiNextdotjs },
-      { label: "Tailwind CSS", icon: SiTailwindcss },
-      { label: "TypeScript", icon: SiTypescript },
-    ],
-    category: "Web",
-    liveUrl: "https://tawedzerwa.vercel.app/",
-    accentColor: "orange",
-    highlights: [
+      "A strong online presence showcasing a wide range of building services across 12 trade categories — with testimonials, a project gallery, service areas, and WhatsApp-integrated lead capture.",
+    features: [
       "12 service categories",
       "WhatsApp & contact form lead capture",
       "Project gallery with category labels",
       "Client testimonials section",
-      "Service areas coverage section",
+      "Service areas coverage map",
       "Fully responsive & SEO optimised",
     ],
-    status: "Live",
+    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
+    url: "https://tawedzerwa.vercel.app/",
+    icon: Hammer,
   },
   {
-    title: "Sah Veh",
-    subtitle: "Holistic Wellness E-Commerce",
+    num: "04",
+    status: "Live",
+    type: "Holistic Wellness E-Commerce",
+    name: "Sah Veh",
     description:
-      "An e-commerce storefront for a South African wellness brand selling plant-based supplements, with WhatsApp-based ordering and a wellness blog. Designed to match the brand's natural, holistic identity with an earthy premium aesthetic.",
-    tags: [
-      { label: "Next.js", icon: SiNextdotjs },
-      { label: "Tailwind CSS", icon: SiTailwindcss },
-      { label: "TypeScript", icon: SiTypescript },
-    ],
-    category: "Web",
-    liveUrl: "https://sa-vah.vercel.app/",
-    accentColor: "emerald",
-    highlights: [
+      "A premium-feeling online store for a natural wellness brand. Products are purchased via WhatsApp for a personal touch. Includes a blog covering supplement science and wellness topics.",
+    features: [
       "Product catalogue with detail pages",
       "WhatsApp-integrated ordering",
       "Wellness blog with articles",
@@ -165,277 +139,314 @@ const projects: Project[] = [
       "Mobile-first responsive design",
       "Brand-matched visual design",
     ],
+    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
+    url: "https://sa-vah.vercel.app/",
+    icon: ShoppingBag,
+  },
+  {
+    num: "05",
     status: "Live",
+    type: "Driving School",
+    name: "K53 Driving School SM",
+    description:
+      "A multi-page website for a Cape Town-based driving school with brand colours, POPIA-compliant privacy policy, services, pricing, contact forms, and full SEO with structured data.",
+    features: [
+      "Services & pricing pages",
+      "Contact form integration",
+      "POPIA-compliant privacy policy",
+      "Full SEO & structured data",
+      "Responsive across all devices",
+      "Local business optimised",
+    ],
+    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
+    url: "#",
+    icon: Car,
   },
 ];
 
-// ─── Accent Tokens ────────────────────────────────────────────────────────────
-
-const accent = {
-  cyan: {
-    pill: "bg-cyan-500/10 border border-cyan-500/20 text-cyan-300",
-    dot: "bg-cyan-400",
-    label: "text-cyan-400",
-    btn: "bg-cyan-500 hover:bg-cyan-400 text-black",
-    ring: "hover:border-cyan-500/50",
-  },
-  emerald: {
-    pill: "bg-emerald-500/10 border border-emerald-500/20 text-emerald-300",
-    dot: "bg-emerald-400",
-    label: "text-emerald-400",
-    btn: "bg-emerald-500 hover:bg-emerald-400 text-black",
-    ring: "hover:border-emerald-500/50",
-  },
-  violet: {
-    pill: "bg-violet-500/10 border border-violet-500/20 text-violet-300",
-    dot: "bg-violet-400",
-    label: "text-violet-400",
-    btn: "bg-violet-500 hover:bg-violet-400 text-white",
-    ring: "hover:border-violet-500/50",
-  },
-  orange: {
-    pill: "bg-orange-500/10 border border-orange-500/20 text-orange-300",
-    dot: "bg-orange-400",
-    label: "text-orange-400",
-    btn: "bg-orange-500 hover:bg-orange-400 text-black",
-    ring: "hover:border-orange-500/50",
-  },
-};
-
-const statusStyle: Record<Project["status"], string> = {
-  Live: "bg-green-500/10 border border-green-500/20 text-green-400",
-  "In Progress": "bg-yellow-500/10 border border-yellow-500/20 text-yellow-400",
-  Completed: "bg-white/5 border border-white/10 text-gray-400",
-};
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ProjectsPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="pt-24 pb-16 text-center">
-          <span className="text-cyan-400 text-xs uppercase tracking-[4px] font-medium">
-            My Work
-          </span>
+    <main className="relative min-h-screen bg-[#060a0a] text-[#f0fdfa] antialiased overflow-hidden">
+      {/* Aurora bg */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -top-40 right-0 w-[500px] h-[500px] rounded-full bg-cyan-400/[0.06] blur-[100px] animate-[drift1_18s_ease-in-out_infinite]" />
+        <div className="absolute top-[40%] -left-40 w-[400px] h-[400px] rounded-full bg-emerald-400/[0.05] blur-[100px] animate-[drift2_22s_ease-in-out_infinite]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,black_40%,transparent)]" />
+      </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mt-4 leading-tight tracking-tight">
-            Projects
-          </h1>
+      <div className="relative z-10 max-w-[1000px] mx-auto px-5 sm:px-8 lg:px-12">
+        {/* ── Header ──────────────────────────────────────────────────── */}
+        <section className="pt-[clamp(6rem,10vw,8rem)] pb-[clamp(2rem,4vw,3rem)]">
+          <Reveal>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-[13px] text-slate-500 hover:text-slate-300 transition-colors mb-8"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back home
+            </Link>
+          </Reveal>
 
-          <p className="text-gray-400 mt-5 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-            A selection of real-world projects I&apos;ve designed and built —
-            from local business websites to e-commerce storefronts.
-          </p>
+          <Reveal delay={0.05}>
+            <div className="flex items-end justify-between flex-wrap gap-4 mb-4">
+              <div>
+                <p className="text-[10.5px] font-semibold text-cyan-400/80 uppercase tracking-[0.12em] mb-3">
+                  My Work
+                </p>
+                <h1 className="text-[clamp(2rem,6vw,3.5rem)] font-bold tracking-[-0.04em] leading-[1.06]">
+                  Projects
+                </h1>
+              </div>
+              <div className="inline-flex items-center gap-2 bg-white/[0.03] border border-white/[0.08] rounded-full px-3.5 py-1.5 mb-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span className="text-[12px] text-slate-400 font-medium">
+                  {projects.length} projects shipped
+                </span>
+              </div>
+            </div>
+          </Reveal>
 
-          {/* Shipped pill — matches homepage stat chips */}
-          <div className="inline-flex items-center gap-2 mt-6 bg-white/5 border border-white/10 rounded-full px-5 py-2.5">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-gray-300 text-sm font-medium">
-              {projects.length} projects shipped
-            </span>
+          <Reveal delay={0.1}>
+            <p className="text-[clamp(0.95rem,2vw,1.05rem)] text-slate-400 max-w-[520px] leading-[1.75] font-light">
+              A selection of real-world projects I&apos;ve designed and built —
+              from local business websites to e-commerce platforms.
+            </p>
+          </Reveal>
+        </section>
+
+        {/* ── Divider ──────────────────────────────────────────────────── */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+
+        {/* ── Projects list ────────────────────────────────────────────── */}
+        <section className="py-[clamp(3rem,6vw,5rem)]">
+          <div className="flex flex-col gap-6">
+            {projects.map((project, i) => {
+              const Icon = project.icon;
+              return (
+                <Reveal
+                  key={project.name}
+                  delay={i * 0.06}
+                >
+                  <div className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:border-cyan-400/25 transition-all duration-500">
+                    {/* Hover glow */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                      <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-cyan-400/[0.06] blur-[60px]" />
+                      <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-emerald-400/[0.04] blur-[60px]" />
+                    </div>
+
+                    <div className="relative p-6 sm:p-8">
+                      {/* Top row: number + status + type */}
+                      <div className="flex items-center gap-3 mb-6 flex-wrap">
+                        <span className="text-[11px] font-mono text-slate-600">
+                          {project.num}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 bg-emerald-400/10 border border-emerald-400/20 rounded-full px-2.5 py-0.5">
+                          <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                          <span className="text-[10.5px] text-emerald-300 font-medium">
+                            {project.status}
+                          </span>
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-medium">
+                          {project.type}
+                        </span>
+                      </div>
+
+                      {/* Title row */}
+                      <div className="flex items-start justify-between gap-6 mb-5">
+                        <div className="flex items-center gap-4">
+                          <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400/15 to-emerald-400/15 border border-cyan-400/20 group-hover:scale-110 group-hover:rotate-[-3deg] transition-transform duration-300">
+                            <Icon
+                              className="w-5 h-5 text-cyan-300"
+                              strokeWidth={1.8}
+                            />
+                          </div>
+                          <h2 className="text-[clamp(1.3rem,3vw,1.8rem)] font-bold tracking-[-0.03em] text-[#f0fdfa]">
+                            {project.name}
+                          </h2>
+                        </div>
+                        {project.url !== "#" && (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-slate-500 hover:text-cyan-300 hover:border-cyan-400/30 hover:bg-cyan-400/[0.06] transition-all duration-200"
+                            aria-label={`Visit ${project.name}`}
+                          >
+                            <ArrowUpRight className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-[13.5px] text-slate-400 leading-[1.75] font-light max-w-[600px] mb-6">
+                        {project.description}
+                      </p>
+
+                      {/* Features grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mb-6">
+                        {project.features.map((feat) => (
+                          <div
+                            key={feat}
+                            className="flex items-start gap-2 py-1"
+                          >
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 flex-shrink-0" />
+                            <span className="text-[12.5px] text-slate-400 font-light leading-relaxed">
+                              {feat}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Bottom row: stack + CTA */}
+                      <div className="flex items-center justify-between flex-wrap gap-4 pt-5 border-t border-white/[0.04]">
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.stack.map((s) => (
+                            <span
+                              key={s}
+                              className="text-[11px] text-slate-500 bg-white/[0.03] border border-white/[0.06] rounded-md px-2.5 py-1 font-medium"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                        {project.url !== "#" && (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[12.5px] text-cyan-300 font-medium hover:text-cyan-200 transition-colors group/link"
+                          >
+                            View live
+                            <ArrowUpRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </section>
 
-        {/* ── DIVIDER ──────────────────────────────────────────────────────── */}
-        <div className="h-px bg-white/10" />
-
-        {/* ── PROJECT LIST ─────────────────────────────────────────────────── */}
-        <section
-          className="py-16 flex flex-col gap-6"
-          aria-label="Projects"
-        >
-          {projects.map((project, i) => {
-            const a = accent[project.accentColor];
-            return (
-              <article
-                key={project.title}
-                className={`group relative flex flex-col lg:flex-row border border-white/10 ${a.ring} rounded-2xl overflow-hidden transition-all duration-300 bg-white/[0.02] hover:bg-white/[0.04]`}
-              >
-                {/* ── Left panel ─────────────────────────────────────────── */}
-                <div className="relative w-full lg:w-[38%] shrink-0 min-h-[200px] sm:min-h-[240px] lg:min-h-0 bg-black/50 border-b lg:border-b-0 lg:border-r border-white/10 overflow-hidden flex items-end">
-                  {/* Subtle grid */}
-                  <div
-                    className="absolute inset-0 opacity-[0.06]"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-                      backgroundSize: "28px 28px",
-                    }}
-                    aria-hidden="true"
-                  />
-
-                  {/* Glow orb */}
-                  <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 sm:w-48 sm:h-48 rounded-full blur-3xl opacity-10 ${a.dot}`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Large index number */}
-                  <span
-                    className="absolute top-4 left-5 text-[72px] font-black leading-none text-white/[0.04] select-none"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  {/* Status + category badges */}
-                  <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
-                    <span
-                      className={`text-[11px] font-medium rounded-full px-3 py-1 ${statusStyle[project.status]}`}
-                    >
-                      ● {project.status}
-                    </span>
-                    <span className="text-[11px] text-gray-500 border border-white/10 rounded-full px-3 py-1 bg-black/40">
-                      {project.category}
-                    </span>
-                  </div>
-
-                  {/* Title block */}
-                  <div className="relative z-10 p-6">
-                    <p
-                      className={`text-xs font-semibold uppercase tracking-widest mb-1 ${a.label}`}
-                    >
-                      {project.subtitle}
-                    </p>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-                      {project.title}
-                    </h2>
-                  </div>
-                </div>
-
-                {/* ── Right panel ────────────────────────────────────────── */}
-                <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 w-full">
-                  {/* Description */}
-                  <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Highlights grid */}
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                    {project.highlights.map((h) => (
-                      <li
-                        key={h}
-                        className="flex items-start gap-2.5"
-                      >
-                        <span
-                          className={`mt-[7px] w-1.5 h-1.5 rounded-full shrink-0 ${a.dot}`}
-                        />
-                        <span className="text-gray-400 text-xs sm:text-sm leading-5">
-                          {h}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Footer row */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-white/10">
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map(({ label, icon: Icon }) => (
-                        <span
-                          key={label}
-                          className={`inline-flex items-center gap-1.5 text-xs rounded-full px-3 py-1 font-medium ${a.pill}`}
-                        >
-                          {Icon && (
-                            <Icon
-                              className="text-[11px]"
-                              aria-hidden="true"
-                            />
-                          )}
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Action buttons */}
-                    <div className="flex items-center gap-2.5 shrink-0">
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View ${project.title} source code on GitHub`}
-                          className="inline-flex items-center gap-1.5 text-gray-400 text-sm border border-white/10 rounded-full px-4 py-2 hover:border-white/30 hover:text-white transition-all duration-200"
-                        >
-                          <FiGithub
-                            className="text-base"
-                            aria-hidden="true"
-                          />
-                          <span>Code</span>
-                        </a>
-                      )}
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Visit ${project.title} live site`}
-                          className={`inline-flex items-center gap-1.5 text-sm font-semibold rounded-full px-5 py-2 transition-all duration-200 hover:scale-105 active:scale-100 ${a.btn}`}
-                        >
-                          <FiExternalLink
-                            className="text-base"
-                            aria-hidden="true"
-                          />
-                          <span>View Live</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </section>
-
-        {/* ── DIVIDER ──────────────────────────────────────────────────────── */}
-        <div className="h-px bg-white/10" />
-
-        {/* ── MORE COMING / CTA ────────────────────────────────────────────── */}
-        <section
-          className="py-16 flex flex-col items-center text-center"
-          aria-label="Get in touch"
-        >
-          <div className="border border-white/10 rounded-2xl p-10 sm:p-14 bg-white/[0.02] w-full max-w-xl">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-5">
-              <FiArrowUpRight
-                className="text-cyan-400 text-xl"
-                aria-hidden="true"
+        {/* ── More coming ──────────────────────────────────────────────── */}
+        <Reveal>
+          <div className="flex flex-col items-center text-center py-10 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/10 to-emerald-400/10 border border-white/[0.08] flex items-center justify-center mb-5">
+              <Sparkles
+                className="w-5 h-5 text-cyan-300"
+                strokeWidth={1.8}
               />
             </div>
-
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h3 className="text-[18px] font-semibold tracking-tight mb-2">
               More on the way
-            </h2>
-
-            <p className="text-gray-400 mt-4 text-sm sm:text-base leading-relaxed max-w-sm mx-auto">
+            </h3>
+            <p className="text-[13.5px] text-slate-500 max-w-[360px] font-light leading-relaxed">
               Several mobile and web projects are currently in progress. Check
               back soon — or reach out if you&apos;d like to commission
               something.
             </p>
+          </div>
+        </Reveal>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-3 mt-8">
+        {/* ── Bottom CTA ──────────────────────────────────────────────── */}
+        <Reveal>
+          <div className="border-t border-white/[0.06] py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="text-[clamp(1rem,2.5vw,1.2rem)] font-semibold tracking-tight">
+                Like what you see?{" "}
+                <span className="gradient-text">Let&apos;s work together.</span>
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
               <a
                 href="mailto:tafadzwachiri03@outlook.com"
-                className="inline-flex items-center justify-center gap-2 bg-cyan-500 text-black font-bold px-8 py-3.5 rounded-full hover:bg-cyan-400 transition-all duration-200 hover:scale-105 active:scale-100 text-sm"
+                className="btn-glow group inline-flex items-center gap-2 text-[#060a0a] text-[12.5px] font-bold px-5 py-2.5 rounded-xl tracking-tight"
               >
-                <MdEmail
-                  className="text-base"
-                  aria-hidden="true"
-                />
+                <Mail className="w-3.5 h-3.5" />
                 Start a project
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </a>
               <Link
                 href="/"
-                className="inline-flex items-center justify-center border border-white/15 text-gray-300 px-8 py-3.5 rounded-full hover:border-cyan-500/50 hover:text-cyan-400 transition-all duration-200 text-sm"
+                className="inline-flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] text-slate-300 text-[12.5px] font-medium px-5 py-2.5 rounded-xl hover:bg-white/[0.08] transition-all tracking-tight"
               >
-                ← Back home
+                <ArrowLeft className="w-3.5 h-3.5" />
+                Back home
               </Link>
             </div>
           </div>
-        </section>
+        </Reveal>
       </div>
+
+      {/* ── Styles ────────────────────────────────────────────────────── */}
+      <style
+        jsx
+        global
+      >{`
+        .gradient-text {
+          background: linear-gradient(
+            110deg,
+            #22d3ee 0%,
+            #2dd4bf 40%,
+            #4ade80 100%
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shine 6s linear infinite;
+        }
+        @keyframes shine {
+          to {
+            background-position: 200% center;
+          }
+        }
+
+        .btn-glow {
+          background: linear-gradient(110deg, #22d3ee, #4ade80);
+          background-size: 200% auto;
+          transition:
+            background-position 0.5s,
+            box-shadow 0.3s,
+            transform 0.2s;
+        }
+        .btn-glow:hover {
+          background-position: right center;
+          box-shadow: 0 8px 30px rgba(45, 212, 191, 0.35);
+          transform: translateY(-2px);
+        }
+
+        @keyframes drift1 {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(60px, 40px) scale(1.15);
+          }
+        }
+        @keyframes drift2 {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(-50px, 60px) scale(1.1);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .gradient-text {
+            animation: none !important;
+          }
+          [class*="animate-"] {
+            animation: none !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

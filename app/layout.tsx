@@ -21,7 +21,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tafadzwa.site"),
-  title: "Taffy | Fullstack Developer — Next.js, React Native & Flutter",
+  title: {
+    default: "Taffy | Fullstack Developer — Next.js, React Native & Flutter",
+    template: "%s | Taffy",
+  },
   description:
     "Tafadzwa 'Taffy' Chiripanyanga is a Zimbabwean fullstack developer based in Durban, South Africa. He builds high-quality mobile apps and web platforms using Next.js, React Native, Flutter, Supabase and more. Open for freelance and remote work.",
   keywords: [
@@ -130,9 +133,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[#060a0a] text-[#f0fdfa]">
         <Navbar />
-        {children}
+        <div className="flex-1">{children}</div>
         <Footer />
         <SpeedInsights />
       </body>

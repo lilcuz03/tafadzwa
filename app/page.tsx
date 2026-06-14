@@ -12,9 +12,14 @@ import {
   Download,
   Mail,
   MapPin,
+  Calendar,
+  Clock,
+  ArrowUpRight,
 } from "lucide-react";
 import SkillCard from "@/components/skillsCard";
 import me from "../public/me.jpeg";
+import { posts } from "@/lib/blog-data";
+
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
@@ -388,6 +393,83 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Blogs   */}
+        {/* ── LATEST POSTS ──────────────────────────────────────────────── */}
+        <section
+          id="blog"
+          className="py-[clamp(3rem,6vw,5rem)] border-t border-white/[0.06]"
+        >
+          <Reveal>
+            <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+              <div>
+                <p className="section-eyebrow">Blog</p>
+                <h2 className="section-title">Latest Posts</h2>
+                <p className="text-[14px] text-slate-500 leading-[1.7] font-light max-w-[400px] mt-2">
+                  Thoughts on development, freelancing, and building products in
+                  South Africa.
+                </p>
+              </div>
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-[12.5px] text-cyan-400/70 font-medium hover:text-cyan-300 transition-colors group"
+              >
+                View all posts
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {posts.slice(0, 3).map((post, i) => (
+              <Reveal
+                key={post.slug}
+                delay={i * 0.08}
+              >
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="group relative block rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 h-full overflow-hidden hover:border-cyan-400/25 transition-all duration-400"
+                >
+                  {/* Hover glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-600 pointer-events-none">
+                    <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-cyan-400/[0.07] blur-[40px]" />
+                  </div>
+
+                  <div className="relative">
+                    {/* Category */}
+                    <span className="inline-flex items-center gap-1 text-[10.5px] text-cyan-400/60 font-medium bg-cyan-400/[0.06] rounded px-2 py-0.5 mb-4">
+                      {post.category}
+                    </span>
+
+                    {/* Title */}
+                    <h3 className="text-[15px] font-semibold tracking-[-0.02em] leading-[1.35] text-slate-100 group-hover:text-white transition-colors mb-2.5 line-clamp-2">
+                      {post.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <p className="text-[12.5px] text-slate-500 leading-[1.7] font-light mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Bottom meta */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5 text-[11px] text-slate-600">
+                        <span className="inline-flex items-center gap-1">
+                          <Calendar className="w-2.5 h-2.5" />
+                          {post.date}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5" />
+                          {post.readTime}
+                        </span>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </section>
         {/* ── ABOUT ─────────────────────────────────────────────────────── */}
         <section
           id="about"
@@ -406,8 +488,8 @@ export default function Home() {
             <Reveal delay={0.12}>
               <div>
                 <p className="text-[13.5px] text-slate-400 leading-[1.85] mb-4 font-light">
-                  I&apos;m a Zimbabwean developer based in Durban, South Africa.
-                  I build end-to-end products — mobile apps, web platforms, and
+                  I&apos;m a developer based in Durban, South Africa. I build
+                  end-to-end products — mobile apps, web platforms, and
                   everything in between. I care about the craft: clean code,
                   sharp design, and software that actually works.
                 </p>
