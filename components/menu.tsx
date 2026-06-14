@@ -10,7 +10,8 @@ import { Menu, X, ArrowRight } from "lucide-react";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/Projects" },
-  { label: "Gallery", href: "/Gallery" },
+  { label: "Craft", href: "/Craft" },
+  { label: "blogs", href: "/blogs" },
 ];
 
 // ─── Navbar ────────────────────────────────────────────────────────────────────
