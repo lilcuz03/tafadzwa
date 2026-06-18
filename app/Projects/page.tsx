@@ -14,6 +14,7 @@ import {
   Sparkles,
   Mail,
   ArrowRight,
+  Bot,
 } from "lucide-react";
 
 // ─── Reveal ────────────────────────────────────────────────────────────────────
@@ -85,6 +86,7 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     url: "https://www.ttfrech.co.za/",
     icon: Building2,
+    badge: null,
   },
   {
     num: "02",
@@ -104,6 +106,7 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     url: "https://brightfix-alpha.vercel.app/",
     icon: Wrench,
+    badge: null,
   },
   {
     num: "03",
@@ -123,6 +126,7 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     url: "https://tawedzerwa.vercel.app/",
     icon: Hammer,
+    badge: null,
   },
   {
     num: "04",
@@ -142,6 +146,7 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     url: "https://sa-vah.vercel.app/",
     icon: ShoppingBag,
+    badge: null,
   },
   {
     num: "05",
@@ -161,6 +166,33 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     url: "#",
     icon: Car,
+    badge: null,
+  },
+  {
+    num: "06",
+    status: "Live",
+    type: "AI Automation System",
+    name: "AI Lead Generation Engine",
+    description:
+      "A fully automated lead generation system that runs daily across 27 cities in Africa, the UK, Europe, and North America. It discovers businesses with no website or poor digital presence, generates AI-written cold outreach pitches, and logs structured leads to a Google Sheet — entirely hands-free.",
+    features: [
+      "Searches 27 cities across 4 continents daily",
+      "Filters businesses with no website or low rating",
+      "AI-generated cold outreach pitch per lead",
+      "Auto-logs to Google Sheets with full contact data",
+      "Runs on a schedule — no manual input needed",
+      "Deployed 24/7 on Railway.app",
+    ],
+    stack: [
+      "n8n",
+      "Google Places API",
+      "Groq AI",
+      "Google Sheets API",
+      "Railway",
+    ],
+    url: "#",
+    icon: Bot,
+    badge: "Automation",
   },
 ];
 
@@ -211,7 +243,7 @@ export default function ProjectsPage() {
           <Reveal delay={0.1}>
             <p className="text-[clamp(0.95rem,2vw,1.05rem)] text-slate-400 max-w-[520px] leading-[1.75] font-light">
               A selection of real-world projects I&apos;ve designed and built —
-              from local business websites to e-commerce platforms.
+              from local business websites to AI-powered automation systems.
             </p>
           </Reveal>
         </section>
@@ -224,20 +256,32 @@ export default function ProjectsPage() {
           <div className="flex flex-col gap-6">
             {projects.map((project, i) => {
               const Icon = project.icon;
+              const isAutomation = project.badge === "Automation";
               return (
                 <Reveal
                   key={project.name}
                   delay={i * 0.06}
                 >
-                  <div className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:border-cyan-400/25 transition-all duration-500">
+                  <div
+                    className={`group relative rounded-2xl border overflow-hidden transition-all duration-500 ${
+                      isAutomation
+                        ? "border-cyan-400/20 bg-gradient-to-br from-cyan-400/[0.04] to-emerald-400/[0.03] hover:border-cyan-400/40"
+                        : "border-white/[0.06] bg-white/[0.02] hover:border-cyan-400/25"
+                    }`}
+                  >
                     {/* Hover glow */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                       <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-cyan-400/[0.06] blur-[60px]" />
                       <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-emerald-400/[0.04] blur-[60px]" />
                     </div>
 
+                    {/* Automation top accent bar */}
+                    {isAutomation && (
+                      <div className="h-px bg-gradient-to-r from-cyan-400/60 via-emerald-400/60 to-transparent" />
+                    )}
+
                     <div className="relative p-6 sm:p-8">
-                      {/* Top row: number + status + type */}
+                      {/* Top row: number + status + type + badge */}
                       <div className="flex items-center gap-3 mb-6 flex-wrap">
                         <span className="text-[11px] font-mono text-slate-600">
                           {project.num}
@@ -251,12 +295,26 @@ export default function ProjectsPage() {
                         <span className="text-[11px] text-slate-500 font-medium">
                           {project.type}
                         </span>
+                        {isAutomation && (
+                          <span className="inline-flex items-center gap-1.5 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-2.5 py-0.5">
+                            <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" />
+                            <span className="text-[10.5px] text-cyan-300 font-medium">
+                              Running daily
+                            </span>
+                          </span>
+                        )}
                       </div>
 
                       {/* Title row */}
                       <div className="flex items-start justify-between gap-6 mb-5">
                         <div className="flex items-center gap-4">
-                          <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400/15 to-emerald-400/15 border border-cyan-400/20 group-hover:scale-110 group-hover:rotate-[-3deg] transition-transform duration-300">
+                          <div
+                            className={`w-11 h-11 rounded-xl flex items-center justify-center border group-hover:scale-110 group-hover:rotate-[-3deg] transition-transform duration-300 ${
+                              isAutomation
+                                ? "bg-gradient-to-br from-cyan-400/20 to-emerald-400/20 border-cyan-400/30"
+                                : "bg-gradient-to-br from-cyan-400/15 to-emerald-400/15 border-cyan-400/20"
+                            }`}
+                          >
                             <Icon
                               className="w-5 h-5 text-cyan-300"
                               strokeWidth={1.8}
@@ -305,7 +363,11 @@ export default function ProjectsPage() {
                           {project.stack.map((s) => (
                             <span
                               key={s}
-                              className="text-[11px] text-slate-500 bg-white/[0.03] border border-white/[0.06] rounded-md px-2.5 py-1 font-medium"
+                              className={`text-[11px] rounded-md px-2.5 py-1 font-medium border ${
+                                isAutomation
+                                  ? "text-cyan-400/70 bg-cyan-400/[0.06] border-cyan-400/15"
+                                  : "text-slate-500 bg-white/[0.03] border-white/[0.06]"
+                              }`}
                             >
                               {s}
                             </span>
@@ -344,9 +406,9 @@ export default function ProjectsPage() {
               More on the way
             </h3>
             <p className="text-[13.5px] text-slate-500 max-w-[360px] font-light leading-relaxed">
-              Several mobile and web projects are currently in progress. Check
-              back soon — or reach out if you&apos;d like to commission
-              something.
+              Several mobile, web, and automation projects are currently in
+              progress. Check back soon — or reach out if you&apos;d like to
+              commission something.
             </p>
           </div>
         </Reveal>
