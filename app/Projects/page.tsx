@@ -15,6 +15,7 @@ import {
   Mail,
   ArrowRight,
   Bot,
+  PenLine,
 } from "lucide-react";
 
 // ─── Reveal ────────────────────────────────────────────────────────────────────
@@ -148,28 +149,9 @@ const projects = [
     icon: ShoppingBag,
     badge: null,
   },
+
   {
     num: "05",
-    status: "Live",
-    type: "Driving School",
-    name: "K53 Driving School SM",
-    description:
-      "A multi-page website for a Cape Town-based driving school with brand colours, POPIA-compliant privacy policy, services, pricing, contact forms, and full SEO with structured data.",
-    features: [
-      "Services & pricing pages",
-      "Contact form integration",
-      "POPIA-compliant privacy policy",
-      "Full SEO & structured data",
-      "Responsive across all devices",
-      "Local business optimised",
-    ],
-    stack: ["Next.js", "Tailwind CSS", "TypeScript"],
-    url: "#",
-    icon: Car,
-    badge: null,
-  },
-  {
-    num: "06",
     status: "Live",
     type: "AI Automation System",
     name: "AI Lead Generation Engine",
@@ -192,7 +174,28 @@ const projects = [
     ],
     url: "#",
     icon: Bot,
+    PenLine,
     badge: "Automation",
+  },
+  {
+    num: "06",
+    status: "In Development",
+    type: "AI SaaS Tool",
+    name: "BlogForge",
+    description:
+      "An AI-powered blog generation tool built for agencies and freelancers. Takes a business name, topic, audience, and style preferences — and produces a fully formatted, SEO-optimised blog post in seconds. Built as an internal productivity tool to deliver content services faster and at scale.",
+    features: [
+      "AI blog generation in under 10 seconds",
+      "5 tone options and 5 format styles",
+      "SEO keyword integration",
+      "Word count control from 300–2,000 words",
+      "Copy and download output instantly",
+      "South African and international English support",
+    ],
+    stack: ["Next.js", "TypeScript", "Groq AI", "Tailwind CSS"],
+    url: "#",
+    icon: PenLine,
+    badge: "Product",
   },
 ];
 
@@ -243,7 +246,8 @@ export default function ProjectsPage() {
           <Reveal delay={0.1}>
             <p className="text-[clamp(0.95rem,2vw,1.05rem)] text-slate-400 max-w-[520px] leading-[1.75] font-light">
               A selection of real-world projects I&apos;ve designed and built —
-              from local business websites to AI-powered automation systems.
+              from local business websites to AI-powered tools and automation
+              systems.
             </p>
           </Reveal>
         </section>
@@ -256,7 +260,8 @@ export default function ProjectsPage() {
           <div className="flex flex-col gap-6">
             {projects.map((project, i) => {
               const Icon = project.icon;
-              const isAutomation = project.badge === "Automation";
+              const isAutomation =
+                project.badge === "Automation" || project.badge === "Product";
               return (
                 <Reveal
                   key={project.name}
@@ -286,9 +291,15 @@ export default function ProjectsPage() {
                         <span className="text-[11px] font-mono text-slate-600">
                           {project.num}
                         </span>
-                        <span className="inline-flex items-center gap-1.5 bg-emerald-400/10 border border-emerald-400/20 rounded-full px-2.5 py-0.5">
-                          <span className="w-1 h-1 rounded-full bg-emerald-400" />
-                          <span className="text-[10.5px] text-emerald-300 font-medium">
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 ${project.status === "In Development" ? "bg-amber-400/10 border border-amber-400/20" : "bg-emerald-400/10 border border-emerald-400/20"}`}
+                        >
+                          <span
+                            className={`w-1 h-1 rounded-full ${project.status === "In Development" ? "bg-amber-400" : "bg-emerald-400"}`}
+                          />
+                          <span
+                            className={`text-[10.5px] font-medium ${project.status === "In Development" ? "text-amber-300" : "text-emerald-300"}`}
+                          >
                             {project.status}
                           </span>
                         </span>
