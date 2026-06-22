@@ -10,12 +10,12 @@ import {
   Wrench,
   Building2,
   ShoppingBag,
-  Car,
   Sparkles,
   Mail,
   ArrowRight,
   Bot,
   PenLine,
+  ScanSearch,
 } from "lucide-react";
 
 // ─── Reveal ────────────────────────────────────────────────────────────────────
@@ -149,7 +149,6 @@ const projects = [
     icon: ShoppingBag,
     badge: null,
   },
-
   {
     num: "05",
     status: "Live",
@@ -174,11 +173,37 @@ const projects = [
     ],
     url: "#",
     icon: Bot,
-    PenLine,
     badge: "Automation",
   },
   {
     num: "06",
+    status: "Live",
+    type: "AI Automation System",
+    name: "Bad Website Pitch Engine",
+    description:
+      "An intelligent outreach automation that finds businesses with existing but low-quality websites, uses Groq AI to audit each site's content and form a genuine quality verdict, then auto-generates personalised pitch emails and WhatsApp messages — and sends them automatically via Gmail. Every pitch references specific AI observations about that business's actual site.",
+    features: [
+      "Fetches & audits live website content per business",
+      "Groq AI judges site quality: weak / adequate / strong",
+      "Personalised email + WhatsApp pitch per lead",
+      "Extracts contact emails directly from HTML",
+      "Auto-sends HTML pitch emails via Gmail",
+      "Logs all leads to a private dashboard with one-click outreach",
+    ],
+    stack: [
+      "n8n",
+      "Google Places API",
+      "Groq AI",
+      "Gmail API",
+      "Google Sheets API",
+      "Railway",
+    ],
+    url: "#",
+    icon: ScanSearch,
+    badge: "Automation",
+  },
+  {
+    num: "07",
     status: "In Development",
     type: "AI SaaS Tool",
     name: "BlogForge",
@@ -292,13 +317,25 @@ export default function ProjectsPage() {
                           {project.num}
                         </span>
                         <span
-                          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 ${project.status === "In Development" ? "bg-amber-400/10 border border-amber-400/20" : "bg-emerald-400/10 border border-emerald-400/20"}`}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 ${
+                            project.status === "In Development"
+                              ? "bg-amber-400/10 border border-amber-400/20"
+                              : "bg-emerald-400/10 border border-emerald-400/20"
+                          }`}
                         >
                           <span
-                            className={`w-1 h-1 rounded-full ${project.status === "In Development" ? "bg-amber-400" : "bg-emerald-400"}`}
+                            className={`w-1 h-1 rounded-full ${
+                              project.status === "In Development"
+                                ? "bg-amber-400"
+                                : "bg-emerald-400"
+                            }`}
                           />
                           <span
-                            className={`text-[10.5px] font-medium ${project.status === "In Development" ? "text-amber-300" : "text-emerald-300"}`}
+                            className={`text-[10.5px] font-medium ${
+                              project.status === "In Development"
+                                ? "text-amber-300"
+                                : "text-emerald-300"
+                            }`}
                           >
                             {project.status}
                           </span>
@@ -477,7 +514,6 @@ export default function ProjectsPage() {
             background-position: 200% center;
           }
         }
-
         .btn-glow {
           background: linear-gradient(110deg, #22d3ee, #4ade80);
           background-size: 200% auto;
@@ -491,7 +527,6 @@ export default function ProjectsPage() {
           box-shadow: 0 8px 30px rgba(45, 212, 191, 0.35);
           transform: translateY(-2px);
         }
-
         @keyframes drift1 {
           0%,
           100% {
@@ -510,7 +545,6 @@ export default function ProjectsPage() {
             transform: translate(-50px, 60px) scale(1.1);
           }
         }
-
         @media (prefers-reduced-motion: reduce) {
           .gradient-text {
             animation: none !important;
