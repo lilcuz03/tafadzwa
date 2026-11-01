@@ -1,314 +1,252 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
-import {
-  MessageCircle,
-  Mail,
-  ArrowRight,
-  ArrowUpRight,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import Reveal from "./Reveal";
 
-// ─── Data ──────────────────────────────────────────────────────────────────────
+const EMAIL = "tafadzwachiri03@outlook.com";
+const PHONE = "+27 81 353 2248";
+const WHATSAPP = "https://wa.me/27813532248";
 
-const navLinks = [
+const NAV = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/Projects" },
+  { label: "Blog", href: "/blog" },
   { label: "Craft", href: "/Craft" },
   { label: "Services", href: "/#services" },
   { label: "About", href: "/#about" },
 ];
 
-const socials = [
-  { label: "GitHub", href: "https://github.com/tafadzwa", icon: FaGithub },
+const svg = {
+  width: 18,
+  height: 18,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.8,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+const Arrow = () => (
+  <svg
+    {...svg}
+    width={16}
+    height={16}
+  >
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+const SOCIALS = [
   {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/tafadzwa",
-    icon: FaLinkedin,
+    label: "GitHub",
+    href: "https://github.com/lilcuz03",
+    icon: (
+      <svg {...svg}>
+        <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" />
+      </svg>
+    ),
   },
-  { label: "WhatsApp", href: "https://wa.me/27813532248", icon: MessageCircle },
+  {
+    label: "WhatsApp",
+    href: WHATSAPP,
+    icon: (
+      <svg
+        {...svg}
+        fill="currentColor"
+        stroke="none"
+      >
+        <path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.3-1.4A9.9 9.9 0 1 0 12.04 2zm0 1.8a8.1 8.1 0 1 1-4.2 15.1l-.3-.2-3.1.8.8-3-.2-.3A8.1 8.1 0 0 1 12.04 3.8zM8.6 7.6c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 2.2.9 2.6.7 3.1.7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.6-.8c-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-.8-.4-1.6-.9-2.3-1.6-.5-.6-1-1.3-1.2-1.7-.1-.2 0-.3.1-.4l.4-.4.2-.4c.1-.1 0-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4z" />
+      </svg>
+    ),
+  },
   {
     label: "Instagram",
     href: "https://www.instagram.com/_tafadzwa_03",
-    icon: FaInstagram,
+    icon: (
+      <svg {...svg}>
+        <rect
+          x="3"
+          y="3"
+          width="18"
+          height="18"
+          rx="5"
+        />
+        <circle
+          cx="12"
+          cy="12"
+          r="4"
+        />
+        <circle
+          cx="17.2"
+          cy="6.8"
+          r=".6"
+          fill="currentColor"
+        />
+      </svg>
+    ),
   },
   {
     label: "Facebook",
     href: "https://www.facebook.com/tafadzwa.chiripanyanga.87727",
-    icon: FaFacebook,
+    icon: (
+      <svg {...svg}>
+        <path d="M14 8h2.5V4.5H14a4 4 0 0 0-4 4V11H7.5v3.5H10V21h3.5v-6.5H16l.5-3.5h-3V8.8A.8.8 0 0 1 14 8z" />
+      </svg>
+    ),
   },
 ];
 
-const techStack = [
-  "Next.js",
-  "React Native",
-  "Flutter",
-  "TypeScript",
-  "Supabase",
-  "Tailwind CSS",
-];
-
-// ─── Reveal hook ───────────────────────────────────────────────────────────────
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShown(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, shown };
-}
-
-function Reveal({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const { ref, shown } = useReveal();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: shown ? 1 : 0,
-        transform: shown ? "translateY(0)" : "translateY(20px)",
-        transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-// ─── Footer ────────────────────────────────────────────────────────────────────
-
 export default function Footer() {
   return (
-    <footer className="relative bg-[#060a0a] border-t border-white/[0.06] overflow-hidden">
-      {/* ── Aurora glows ──────────────────────────────────────────────── */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -bottom-32 left-1/4 w-[400px] h-[400px] rounded-full bg-cyan-400/[0.04] blur-[100px]" />
-        <div className="absolute -bottom-32 right-1/4 w-[350px] h-[350px] rounded-full bg-emerald-400/[0.04] blur-[100px]" />
-      </div>
+    <footer className="foot gutter">
+      {/* Ambient layers, same language as the hero */}
+      <div
+        className="hero-grid foot-grid"
+        aria-hidden="true"
+      />
+      <span
+        className="foot-orb a"
+        aria-hidden="true"
+      />
+      <span
+        className="foot-orb b"
+        aria-hidden="true"
+      />
 
-      <div className="relative z-10 max-w-[1000px] mx-auto px-5 sm:px-8 lg:px-12">
-        {/* ── Top CTA strip ───────────────────────────────────────────── */}
+      <div className="relative">
+        {/* CTA band */}
         <Reveal>
-          <div className="py-10 border-b border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="foot-cta">
             <div>
-              <p className="text-[clamp(1.1rem,2.5vw,1.35rem)] font-semibold text-[#f0fdfa] tracking-tight leading-snug">
-                Let&apos;s build something{" "}
-                <span className="gradient-text">great together.</span>
+              <p className="mb-4 inline-flex items-center gap-2.5 text-[.8rem] font-medium uppercase tracking-[.18em] t-muted">
+                <span className="foot-dot" />
+                Open to new projects
               </p>
-              <p className="text-[13px] text-slate-500 mt-1.5 font-light">
-                Open to freelance, remote work, and new ideas.
-              </p>
+              <h2 className="font-display text-[clamp(2rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em]">
+                Have an idea?{" "}
+                <span className="grad-text">Let’s make it real.</span>
+              </h2>
             </div>
-            <a
-              href="mailto:tafadzwachiri03@outlook.com"
-              className="btn-glow group inline-flex items-center gap-2 text-[#060a0a] text-[12.5px] font-bold px-5 py-2.5 rounded-xl tracking-tight flex-shrink-0"
-            >
-              <Mail className="w-3.5 h-3.5" />
-              Get in touch
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/#contact"
+                className="cta cta-lg"
+              >
+                Start a project <Arrow />
+              </Link>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="btn-ghost"
+              >
+                Email me
+              </a>
+            </div>
           </div>
         </Reveal>
 
-        {/* ── Main grid ───────────────────────────────────────────────── */}
-        <div className="py-12 grid grid-cols-1 sm:grid-cols-[1.2fr_0.8fr_1fr] gap-10 sm:gap-8">
-          {/* Col 1: Brand + socials */}
-          <Reveal>
-            <div className="flex flex-col gap-5">
-              {/* Logo */}
+        {/* Link columns */}
+        <Reveal delay={0.1}>
+          <div className="grid gap-12 border-t b-line py-12 md:grid-cols-[1.5fr_1fr_1fr_1fr] md:gap-10">
+            <div>
               <Link
                 href="/"
-                className="group inline-flex items-center gap-2 w-fit"
+                className="font-display text-[1.9rem] font-semibold tracking-[-0.05em]"
               >
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400 to-emerald-400 opacity-70 blur-[3px] group-hover:opacity-100 transition-opacity" />
-                  <span className="relative rounded-full h-2.5 w-2.5 bg-gradient-to-tr from-cyan-400 to-emerald-400" />
-                </span>
-                <span className="text-[15px] font-semibold tracking-tight text-[#f0fdfa] group-hover:text-white transition-colors">
-                  Taffy
-                </span>
+                taachii<span style={{ color: "var(--orange)" }}>.</span>
               </Link>
-
-              <p className="text-[13px] text-slate-500 leading-[1.7] font-light max-w-[260px]">
-                Fullstack developer based in Durban, South Africa. Building
-                mobile apps and web platforms that ship.
+              <p className="mt-4 max-w-[36ch] text-[.95rem] t-muted">
+                A Durban studio building mobile apps, web platforms and content
+                that ship fast and last.
               </p>
+            </div>
 
-              {/* Socials */}
-              <div className="flex items-center gap-2 mt-1">
-                {socials.map((s) => {
-                  const Icon = s.icon;
-                  return (
+            <nav aria-label="Footer">
+              <h3 className="foot-h">Explore</h3>
+              <ul className="grid gap-3">
+                {NAV.map((n) => (
+                  <li key={n.label}>
+                    <Link
+                      href={n.href}
+                      className="foot-link"
+                    >
+                      {n.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div>
+              <h3 className="foot-h">Contact</h3>
+              <ul className="grid gap-3">
+                <li>
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="foot-link break-all"
+                  >
+                    {EMAIL}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={WHATSAPP}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="foot-link"
+                  >
+                    {PHONE}
+                  </a>
+                </li>
+                <li className="text-[.95rem] t-muted">Durban · Remote</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="foot-h">Follow</h3>
+              <ul className="flex flex-wrap gap-2.5">
+                {SOCIALS.map((s) => (
+                  <li key={s.label}>
                     <a
-                      key={s.label}
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={s.label}
-                      className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-slate-500 hover:text-cyan-300 hover:border-cyan-400/30 hover:bg-cyan-400/[0.06] transition-all duration-200"
+                      className="foot-social"
                     >
-                      <Icon
-                        className="w-3.5 h-3.5"
-                        strokeWidth={1.8}
-                      />
+                      {s.icon}
                     </a>
-                  );
-                })}
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Col 2: Navigation */}
-          <Reveal delay={0.08}>
-            <div>
-              <p className="text-[10.5px] font-semibold text-cyan-400/70 uppercase tracking-[0.12em] mb-4">
-                Navigation
-              </p>
-              <div className="flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="group inline-flex items-center gap-1.5 text-[13px] text-slate-400 hover:text-[#f0fdfa] transition-colors py-1.5 font-light w-fit"
-                  >
-                    {link.label}
-                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-cyan-400" />
-                  </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
-          </Reveal>
-
-          {/* Col 3: Contact + stack */}
-          <Reveal delay={0.16}>
-            <div>
-              <p className="text-[10.5px] font-semibold text-cyan-400/70 uppercase tracking-[0.12em] mb-4">
-                Contact
-              </p>
-              <div className="flex flex-col gap-2.5 mb-6">
-                <a
-                  href="mailto:tafadzwachiri03@outlook.com"
-                  className="inline-flex items-center gap-2 text-[13px] text-slate-400 hover:text-[#f0fdfa] transition-colors font-light"
-                >
-                  <Mail className="w-3.5 h-3.5 text-slate-600" />
-                  tafadzwachiri03@outlook.com
-                </a>
-                <a
-                  href="https://wa.me/27813532248"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[13px] text-slate-400 hover:text-[#f0fdfa] transition-colors font-light"
-                >
-                  <Phone className="w-3.5 h-3.5 text-slate-600" />
-                  +27 81 353 2248
-                </a>
-                <span className="inline-flex items-center gap-2 text-[13px] text-slate-500 font-light">
-                  <MapPin className="w-3.5 h-3.5 text-slate-600" />
-                  Durban · Remote
-                </span>
-              </div>
-
-              {/* Tech pills */}
-              {/* <p className="text-[10.5px] font-semibold text-cyan-400/70 uppercase tracking-[0.12em] mb-3">
-                Built with
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {techStack.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[11px] text-slate-500 bg-white/[0.03] border border-white/[0.06] rounded-md px-2 py-0.5 font-medium hover:border-cyan-400/20 hover:text-cyan-300/80 transition-colors"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div> */}
-            </div>
-          </Reveal>
-        </div>
-
-        {/* ── Bottom bar ──────────────────────────────────────────────── */}
-        <Reveal delay={0.2}>
-          <div className="py-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[11.5px] text-slate-600 font-light text-center sm:text-left">
-              © {new Date().getFullYear()} Tafadzwa Chiripanyanga. All rights
-              reserved.
-            </p>
-            {/* <p className="text-[11.5px] text-slate-600 font-light inline-flex items-center gap-1.5">
-              Built with
-              <span className="gradient-text font-medium">Next.js</span>&
-              <span className="gradient-text font-medium">Tailwind CSS</span>
-            </p> */}
           </div>
         </Reveal>
-      </div>
 
-      {/* ── Styles ────────────────────────────────────────────────────── */}
-      <style
-        jsx
-        global
-      >{`
-        .gradient-text {
-          background: linear-gradient(
-            110deg,
-            #22d3ee 0%,
-            #2dd4bf 40%,
-            #4ade80 100%
-          );
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shine 6s linear infinite;
-        }
-        @keyframes shine {
-          to {
-            background-position: 200% center;
-          }
-        }
-        .btn-glow {
-          background: linear-gradient(110deg, #22d3ee, #4ade80);
-          background-size: 200% auto;
-          transition:
-            background-position 0.5s,
-            box-shadow 0.3s,
-            transform 0.2s;
-          box-shadow: 0 0 0 rgba(45, 212, 191, 0);
-        }
-        .btn-glow:hover {
-          background-position: right center;
-          box-shadow: 0 6px 25px rgba(45, 212, 191, 0.3);
-          transform: translateY(-1px);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .gradient-text {
-            animation: none !important;
-          }
-        }
-      `}</style>
+        {/* Bottom bar */}
+        <div className="flex flex-col items-start justify-between gap-3 border-t b-line py-6 text-[.82rem] t-muted sm:flex-row sm:items-center">
+          <a
+            href="#top"
+            className="foot-link inline-flex items-center gap-2"
+          >
+            Back to top
+            <svg
+              {...svg}
+              width={14}
+              height={14}
+            >
+              <path d="M12 19V5M5 12l7-7 7 7" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Giant wordmark */}
+        <p
+          className="foot-wordmark font-display"
+          aria-hidden="true"
+        >
+          taachii
+        </p>
+      </div>
     </footer>
   );
 }
