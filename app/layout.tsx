@@ -1,143 +1,80 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Geist } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/menu";
-import Footer from "@/components/footer";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import Header from "@/components/Header";
 
-// ─── Fonts ─────────────────────────────────────────────────────────────────────
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const body = Geist({
   subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
 });
-
-// ─── SEO Metadata ──────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tafadzwa.site"),
-  title: {
-    default: "Taffy | Fullstack Developer — Next.js, React Native & Flutter",
-    template: "%s | Taffy",
-  },
+  title: "taachii | Fullstack Web & Mobile Development",
   description:
-    "Tafadzwa 'Taffy' Chiripanyanga is a Zimbabwean fullstack developer based in Durban, South Africa. He builds high-quality mobile apps and web platforms using Next.js, React Native, Flutter, Supabase and more. Open for freelance and remote work.",
-  keywords: [
-    "Taffy",
-    "Tafadzwa Chiripanyanga",
-    "fullstack developer South Africa",
-    "Next.js developer Durban",
-    "React Native developer",
-    "Flutter developer",
-    "freelance developer South Africa",
-    "mobile app developer Durban",
-    "web developer Zimbabwe",
-    "Supabase developer",
-  ],
-  authors: [{ name: "Tafadzwa Chiripanyanga", url: "https://tafadzwa.site" }],
-  creator: "Tafadzwa Chiripanyanga",
+    "taachii builds fast, modern websites and mobile apps with Next.js, React Native and Flutter. Based in South Africa, working with clients worldwide.",
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Taffy | Fullstack Developer — Next.js, React Native & Flutter",
-    description:
-      "Zimbabwean fullstack developer based in Durban, SA. Building mobile apps, web platforms, and digital experiences that ship fast and last.",
-    url: "https://tafadzwa.site",
-    siteName: "Taffy — Portfolio",
     type: "website",
+    siteName: "taachii",
+    title: "taachii | Fullstack Web & Mobile Development",
+    description: "Fast, modern websites and mobile apps, built end to end.",
     locale: "en_ZA",
-    images: [
-      {
-        url: "/images/hero.png",
-        width: 1200,
-        height: 630,
-        alt: "Taffy — Fullstack Developer",
-      },
-    ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Taffy | Fullstack Developer",
-    description:
-      "Building mobile apps & web platforms from Durban, South Africa.",
-    images: ["/images/hero.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: { canonical: "https://tafadzwa.site" },
 };
 
-// ─── JSON-LD Structured Data ───────────────────────────────────────────────────
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: "#0a0a0a",
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Tafadzwa Chiripanyanga",
-  alternateName: "Taffy",
-  url: "https://tafadzwa.site",
-  image: "https://tafadzwa.site/images/hero.png",
-  jobTitle: "Fullstack Developer",
-  description:
-    "Zimbabwean fullstack developer based in Durban, South Africa, specialising in Next.js, React Native, Flutter and Supabase.",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Durban",
-    addressCountry: "ZA",
-  },
-  sameAs: ["https://github.com/tafadzwa", "https://linkedin.com/in/tafadzwa"],
-  knowsAbout: [
-    "Next.js",
-    "React Native",
-    "Flutter",
-    "TypeScript",
-    "Supabase",
-    "MongoDB",
-    "Tailwind CSS",
-    "Node.js",
-  ],
-  offers: {
-    "@type": "Offer",
-    description:
-      "Freelance fullstack development — mobile apps, web platforms, and backend APIs.",
-    areaServed: ["ZA", "ZW", "Worldwide"],
-  },
+  "@type": "Organization",
+  name: "taachii",
+  description: "Fullstack web and mobile development studio.",
+  areaServed: "Worldwide",
+  telephone: "+27813532248",
+  email: "tafadzwachiri03@outlook.com",
 };
 
-// ─── Root Layout ───────────────────────────────────────────────────────────────
+// Applies the saved theme before first paint so there is no flash
+const themeInit = `try{var t=localStorage.getItem("taachii-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable}`}
+      suppressHydrationWarning
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#060a0a] text-[#f0fdfa]">
-        <Navbar />
-        <div className="flex-1">{children}</div>
-        <Footer />
-        <SpeedInsights />
+      <body>
+        <div
+          className="glow a"
+          aria-hidden="true"
+        />
+        <div
+          className="glow b"
+          aria-hidden="true"
+        />
+        <Header />
+        {children}
       </body>
     </html>
   );
