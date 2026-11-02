@@ -15,17 +15,51 @@ const body = Geist({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tafadzwa.site";
+const TITLE = "taachii | Fullstack Web & Mobile Development";
+const DESCRIPTION =
+  "taachii builds fast, SEO-ready websites and cross-platform mobile apps with Next.js, React Native and Flutter. Based in Durban, South Africa, working with clients worldwide.";
+
 export const metadata: Metadata = {
-  title: "taachii | Fullstack Web & Mobile Development",
-  description:
-    "taachii builds fast, modern websites and mobile apps with Next.js, React Native and Flutter. Based in South Africa, working with clients worldwide.",
-  robots: { index: true, follow: true },
+  metadataBase: new URL(SITE_URL),
+  title: { default: TITLE, template: "%s | taachii" },
+  description: DESCRIPTION,
+  keywords: [
+    "taachii",
+    "Tafadzwa Chiripanyanga",
+    "fullstack developer Durban",
+    "Next.js developer South Africa",
+    "React Native developer",
+    "Flutter developer",
+    "mobile app developer Durban",
+    "web developer Zimbabwe",
+    "freelance web developer South Africa",
+  ],
+  authors: [{ name: "Tafadzwa Chiripanyanga" }],
+  creator: "Tafadzwa Chiripanyanga",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     siteName: "taachii",
-    title: "taachii | Fullstack Web & Mobile Development",
-    description: "Fast, modern websites and mobile apps, built end to end.",
+    title: TITLE,
+    description: DESCRIPTION,
     locale: "en_ZA",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/opengraph-image"],
   },
 };
 
@@ -36,12 +70,58 @@ export const viewport: Viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "taachii",
-  description: "Fullstack web and mobile development studio.",
-  areaServed: "Worldwide",
-  telephone: "+27813532248",
-  email: "tafadzwachiri03@outlook.com",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "taachii",
+      inLanguage: "en-ZA",
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#business`,
+      name: "taachii",
+      url: SITE_URL,
+      description: DESCRIPTION,
+      email: "tafadzwachiri03@outlook.com",
+      telephone: "+27813532248",
+      areaServed: "Worldwide",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Durban",
+        addressCountry: "ZA",
+      },
+      founder: { "@id": `${SITE_URL}/#person` },
+      serviceType: [
+        "Mobile app development",
+        "Web development",
+        "Backend and API development",
+        "UI and UX engineering",
+      ],
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Tafadzwa Chiripanyanga",
+      jobTitle: "Fullstack Developer",
+      url: SITE_URL,
+      worksFor: { "@id": `${SITE_URL}/#business` },
+      knowsAbout: [
+        "Next.js",
+        "React Native",
+        "Flutter",
+        "TypeScript",
+        "Supabase",
+        "Tailwind CSS",
+      ],
+      sameAs: [
+        "https://github.com/lilcuz03",
+        "https://www.instagram.com/_tafadzwa_03",
+        "https://www.facebook.com/tafadzwa.chiripanyanga.87727",
+      ],
+    },
+  ],
 };
 
 // Applies the saved theme before first paint so there is no flash
