@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 
+// Real pages only. Add Services and About here once they have their own pages.
 const LINKS = [
-  { href: "#home", label: "Home" },
-  { href: "#services", label: "Services" },
-  { href: "#projects", label: "Projects" },
-  { href: "#about", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "/Projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  // { href: "/Craft", label: "Craft" },
 ];
 
 const LOGO = "taachii".split("");
+
+const isActive = (href: string, pathname: string) => {
+  const p = pathname.toLowerCase();
+  const h = href.toLowerCase();
+  return h === "/" ? p === "/" : p === h || p.startsWith(`${h}/`);
+};
 
 const Arrow = () => (
   <svg
@@ -29,10 +38,12 @@ const Arrow = () => (
 );
 
 export default function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
 
+  const navRef = useRef<HTMLElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLSpanElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -57,7 +68,7 @@ export default function Header() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [pathname]);
 
   // Mobile menu: lock scroll, Escape to close, auto-close on desktop widths
   useEffect(() => {
@@ -76,6 +87,28 @@ export default function Header() {
     };
   }, [open]);
 
+  // The nav pill rests on the current page and follows the cursor on hover
+  const restPill = useCallback(() => {
+    const pill = pillRef.current;
+    if (!pill) return;
+    const active = navRef.current?.querySelector<HTMLAnchorElement>(
+      'a[aria-current="page"]',
+    );
+    if (!active) {
+      pill.style.opacity = "0";
+      return;
+    }
+    pill.style.opacity = "1";
+    pill.style.width = `${active.offsetWidth}px`;
+    pill.style.transform = `translateX(${active.offsetLeft}px)`;
+  }, []);
+
+  useEffect(() => {
+    restPill();
+    window.addEventListener("resize", restPill);
+    return () => window.removeEventListener("resize", restPill);
+  }, [pathname, restPill]);
+
   const movePill = (e: React.SyntheticEvent<HTMLAnchorElement>) => {
     const a = e.currentTarget;
     const p = pillRef.current;
@@ -83,9 +116,6 @@ export default function Header() {
     p.style.opacity = "1";
     p.style.width = `${a.offsetWidth}px`;
     p.style.transform = `translateX(${a.offsetLeft}px)`;
-  };
-  const hidePill = () => {
-    if (pillRef.current) pillRef.current.style.opacity = "0";
   };
 
   const onCtaMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -125,8 +155,8 @@ export default function Header() {
         id="top"
         className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${hidden && !open ? styles.hide : ""}`}
       >
-        <a
-          href="#top"
+        <Link
+          href="/"
           className={styles.logo}
           aria-label="taachii home"
         >
@@ -146,12 +176,13 @@ export default function Header() {
           >
             .
           </span>
-        </a>
+        </Link>
 
         <nav
+          ref={navRef}
           className={styles.nav}
           aria-label="Primary"
-          onMouseLeave={hidePill}
+          onMouseLeave={restPill}
         >
           <span
             ref={pillRef}
@@ -164,13 +195,15 @@ export default function Header() {
                 key={l.href}
                 style={{ "--i": i } as React.CSSProperties}
               >
-                <a
+                <Link
                   href={l.href}
+                  aria-current={isActive(l.href, pathname) ? "page" : undefined}
                   onMouseEnter={movePill}
                   onFocus={movePill}
+                  onBlur={restPill}
                 >
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -204,15 +237,15 @@ export default function Header() {
             </svg>
           </button>
 
-          <a
+          <Link
             ref={ctaRef}
             className="cta"
-            href="#contact"
+            href="/#contact"
             onMouseMove={onCtaMove}
             onMouseLeave={onCtaLeave}
           >
             Start a project <Arrow />
-          </a>
+          </Link>
 
           <button
             className={`${styles.iconBtn} ${styles.burger}`}
@@ -244,21 +277,22 @@ export default function Header() {
         }
       >
         {LINKS.map((l, i) => (
-          <a
+          <Link
             key={l.href}
             className={styles.link}
             href={l.href}
+            aria-current={isActive(l.href, pathname) ? "page" : undefined}
           >
             <span className={styles.n}>{String(i + 1).padStart(2, "0")}</span>
             {l.label}
-          </a>
+          </Link>
         ))}
-        <a
+        <Link
           className="cta"
-          href="#contact"
+          href="/#contact"
         >
           Start a project
-        </a>
+        </Link>
         <div className={styles.meta}>
           <span>Let’s talk</span>
           <a href="mailto:tafadzwachiri03@outlook.com">
