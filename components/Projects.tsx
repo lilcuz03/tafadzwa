@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "./Reveal";
 
 type Project = {
@@ -386,12 +387,20 @@ export default function Projects() {
           <p className="font-display max-w-[28ch] text-[clamp(1.25rem,2.4vw,1.75rem)] font-semibold leading-tight tracking-[-0.03em]">
             Your project could be next.
           </p>
-          <a
-            href="#contact"
-            className="cta cta-lg"
-          >
-            Start a project <Arrow />
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/Projects"
+              className="btn-ghost"
+            >
+              See all projects
+            </Link>
+            <a
+              href="#contact"
+              className="cta cta-lg"
+            >
+              Start a project <Arrow />
+            </a>
+          </div>
         </div>
       </Reveal>
     </section>

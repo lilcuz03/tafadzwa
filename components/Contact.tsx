@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Reveal from "./Reveal";
 
 const WHATSAPP_NUMBER = "27813532248";
@@ -88,7 +88,6 @@ function buildMessage(d: FormData) {
 }
 
 export default function Contact() {
-  const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [sentUrl, setSentUrl] = useState<string | null>(null);
 
@@ -221,11 +220,9 @@ export default function Contact() {
 
             {/* Form (stays mounted so details are kept if the visitor edits) */}
             <form
-              ref={formRef}
               onSubmit={onSubmit}
               noValidate
-              hidden={!!sentUrl}
-              className="relative grid gap-7"
+              className={`relative gap-7 ${sentUrl ? "hidden" : "grid"}`}
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>

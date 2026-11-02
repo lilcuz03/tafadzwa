@@ -737,3 +737,238 @@ button.btn-ghost:hover {
 .foot:hover .foot-wordmark {
   opacity: 0.55;
 }
+
+
+
+
+/* ---------- Projects page (append to the very bottom of your globals.css) ---------- */
+
+/* Filter buttons reuse .chip. Buttons don't inherit colour, so set it. */
+button.chip {
+  font-family: inherit;
+  color: var(--fg);
+}
+.chip[aria-pressed="true"] {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #0a0a0a;
+  font-weight: 600;
+}
+
+/* Project cover (generated, or a real screenshot via next/image) */
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 60%),
+    radial-gradient(90% 80% at 100% 100%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
+    color-mix(in srgb, var(--fg) 4%, transparent);
+}
+.cover-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.cover-bar i {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--line);
+}
+.cover-bar span {
+  margin-left: 0.5rem;
+}
+.cover-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8%;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.svc:hover .cover-body {
+  transform: translateX(8px);
+}
+.cover-name {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.cover-sector {
+  margin-top: 0.55rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.status-chip {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* "What's included" dropdown */
+.proj-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.proj-details summary::-webkit-details-marker {
+  display: none;
+}
+.proj-details summary::after {
+  content: "+";
+  color: var(--cyan);
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: transform 0.3s;
+}
+.proj-details[open] summary::after {
+  transform: rotate(45deg);
+}
+.proj-details[open] {
+  padding-bottom: 0.5rem;
+}
+
+
+
+/* ---------- Projects page (append to the very bottom of your globals.css) ---------- */
+
+/* Filter buttons reuse .chip. Buttons don't inherit colour, so set it. */
+button.chip {
+  font-family: inherit;
+  color: var(--fg);
+}
+.chip[aria-pressed="true"] {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #0a0a0a;
+  font-weight: 600;
+}
+
+/* Project cover (generated, or a real screenshot via next/image) */
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 60%),
+    radial-gradient(90% 80% at 100% 100%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
+    color-mix(in srgb, var(--fg) 4%, transparent);
+}
+.cover-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.cover-bar i {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--line);
+}
+.cover-bar span {
+  margin-left: 0.5rem;
+}
+.cover-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8%;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.svc:hover .cover-body {
+  transform: translateX(8px);
+}
+.cover-name {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.cover-sector {
+  margin-top: 0.55rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.status-chip {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* "What's included" dropdown */
+.proj-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.proj-details summary::-webkit-details-marker {
+  display: none;
+}
+.proj-details summary::after {
+  content: "+";
+  color: var(--cyan);
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: transform 0.3s;
+}
+.proj-details[open] summary::after {
+  transform: rotate(45deg);
+}
+.proj-details[open] {
+  padding-bottom: 0.5rem;
+}

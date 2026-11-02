@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Geist } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/footer";
+import { SITE_URL } from "@/lib/site";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -15,7 +16,6 @@ const body = Geist({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tafadzwa.site";
 const TITLE = "taachii | Fullstack Web & Mobile Development";
 const DESCRIPTION =
   "taachii builds fast, SEO-ready websites and cross-platform mobile apps with Next.js, React Native and Flutter. Based in Durban, South Africa, working with clients worldwide.";
