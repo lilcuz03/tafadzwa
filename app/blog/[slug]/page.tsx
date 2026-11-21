@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  Tag,
-  ArrowRight,
-  Mail,
-} from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Reveal from "@/components/Reveal";
 import { posts, getPostBySlug, getAllSlugs } from "@/lib/blog-data";
+
+const SITE = "https://tafadzwa.site";
+const AUTHOR = "Tafadzwa Chiripanyanga";
+const OG_IMAGE = `${SITE}/opengraph-image`;
 
 // ─── Static params ─────────────────────────────────────────────────────────────
 
@@ -26,21 +24,40 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  if (!post) return { title: "Post Not Found" };
+  if (!post) {
+    return {
+      title: { absolute: "Post not found | taachii" },
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const url = `${SITE}/blog/${post.slug}`;
+  const title = `${post.title} | taachii`;
 
   return {
-    title: post.title,
+    title: { absolute: title },
     description: post.excerpt,
+    alternates: { canonical: url },
+    authors: [{ name: AUTHOR, url: SITE }],
+    keywords: post.tags,
+    robots: { index: true, follow: true },
     openGraph: {
-      title: `${post.title} | Taffy`,
-      description: post.excerpt,
       type: "article",
-      url: `https://tafadzwa.site/blog/${post.slug}`,
+      url,
+      siteName: "taachii",
+      locale: "en_ZA",
+      title,
+      description: post.excerpt,
+      authors: [AUTHOR],
+      section: post.category,
+      tags: post.tags,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title,
       description: post.excerpt,
+      images: [OG_IMAGE],
     },
   };
 }
@@ -62,143 +79,218 @@ export default async function BlogPostPage({
   const nextPost =
     currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
+  const url = `${SITE}/blog/${post.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#post`,
+        headline: post.title,
+        description: post.excerpt,
+        url,
+        mainEntityOfPage: url,
+        inLanguage: "en-ZA",
+        articleSection: post.category,
+        keywords: post.tags.join(", "),
+        image: OG_IMAGE,
+        author: { "@type": "Person", name: AUTHOR, url: SITE },
+        publisher: { "@type": "Organization", name: "taachii", url: SITE },
+        isPartOf: { "@id": `${SITE}/blog#blog` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${SITE}/blog`,
+          },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
+  };
+
   return (
-    <main className="relative min-h-screen bg-[#060a0a] text-[#f0fdfa] antialiased overflow-hidden">
-      {/* Aurora */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 right-1/4 w-[400px] h-[400px] rounded-full bg-cyan-400/[0.05] blur-[100px]" />
-        <div className="absolute top-[60%] -left-32 w-[350px] h-[350px] rounded-full bg-emerald-400/[0.04] blur-[100px]" />
-      </div>
+    <main
+      id="top"
+      className="gutter relative pb-[clamp(4rem,10vw,9rem)] pt-[clamp(8rem,14vw,11rem)]"
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
 
-      <div className="relative z-10 max-w-[720px] mx-auto px-5 sm:px-8 lg:px-12">
-        {/* ── Header ──────────────────────────────────────────────────── */}
-        <section className="pt-[clamp(6rem,10vw,8rem)] pb-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-[13px] text-slate-500 hover:text-slate-300 transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            All posts
-          </Link>
+      <div className="mx-auto w-full max-w-[44rem]">
+        <article>
+          {/* Header */}
+          <header>
+            <Reveal>
+              <Link
+                href="/blog"
+                className="svc-link mb-8 inline-flex items-center gap-2 text-[.9rem] font-medium t-muted"
+              >
+                <ArrowLeft
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+                All posts
+              </Link>
 
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex items-center gap-1.5 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-2.5 py-0.5">
-              <Tag className="w-2.5 h-2.5 text-cyan-400" />
-              <span className="text-[10.5px] text-cyan-300 font-medium">
-                {post.category}
-              </span>
-            </span>
-            <span className="text-[11.5px] text-slate-500 inline-flex items-center gap-1.5">
-              <Calendar className="w-3 h-3" />
-              {post.date}
-            </span>
-            <span className="text-[11.5px] text-slate-500 inline-flex items-center gap-1.5">
-              <Clock className="w-3 h-3" />
-              {post.readTime}
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-[clamp(1.6rem,5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15] mb-5">
-            {post.title}
-          </h1>
-
-          {/* Excerpt */}
-          <p className="text-[clamp(0.95rem,2vw,1.05rem)] text-slate-400 leading-[1.75] font-light border-l-2 border-cyan-400/30 pl-5">
-            {post.excerpt}
-          </p>
-
-          {/* Tags */}
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-5">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[11px] text-slate-500 bg-white/[0.03] border border-white/[0.06] rounded-md px-2 py-0.5 font-medium"
-                >
-                  {tag}
+              <p className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[.8rem] font-medium uppercase tracking-[.18em] t-muted">
+                <span className="inline-flex items-center gap-2.5">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--orange)" }}
+                  />
+                  {post.category}
                 </span>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Divider */}
-        <div className="h-px bg-linear-to-r from-transparent via-white/[0.06] to-transparent mb-10" />
-
-        {/* ── Article body ─────────────────────────────────────────────── */}
-        <article
-          className="prose-custom"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-
-        {/* ── Author / CTA ─────────────────────────────────────────────── */}
-        <div className="mt-14 mb-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-cyan-400/[0.05] blur-[50px] pointer-events-none" />
-          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <p className="text-[14px] font-semibold text-slate-100 mb-1">
-                Written by Taffy
+                <span aria-hidden="true">·</span>
+                <span>{post.date}</span>
+                <span aria-hidden="true">·</span>
+                <span>{post.readTime}</span>
               </p>
-              <p className="text-[13px] text-slate-500 font-light">
-                Fullstack developer based in Durban, South Africa.
+
+              <h1 className="font-display text-[clamp(2rem,5.2vw,3.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-balance">
+                {post.title}
+              </h1>
+
+              <p
+                className="mt-7 border-l-2 pl-5 text-[clamp(1.05rem,1.6vw,1.2rem)] leading-relaxed t-muted"
+                style={{ borderColor: "var(--cyan)" }}
+              >
+                {post.excerpt}
               </p>
+
+              {post.tags.length > 0 && (
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {post.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border b-line px-3 py-1 text-[.78rem] font-medium t-muted"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Reveal>
+          </header>
+
+          <div className="b-line my-10 h-px border-t md:my-12" />
+
+          {/* Body */}
+          <div
+            className="prose-custom"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </article>
+
+        {/* Author */}
+        <Reveal className="mt-14 md:mt-16">
+          <aside
+            aria-label="About the author"
+            className="b-line flex flex-col items-start justify-between gap-6 rounded-3xl border p-7 sm:flex-row sm:items-center md:p-9"
+          >
+            <div className="flex items-center gap-4">
+              <span
+                className="b-line font-display flex h-12 w-12 shrink-0 items-center justify-center rounded-full border text-sm font-semibold"
+                aria-hidden="true"
+              >
+                TC
+              </span>
+              <div>
+                <p className="font-display text-lg font-semibold tracking-[-0.02em]">
+                  Written by {AUTHOR}
+                </p>
+                <p className="t-muted">
+                  Founder of taachii, a fullstack developer in Durban, South
+                  Africa.
+                </p>
+              </div>
             </div>
-            <a
-              href="mailto:tafadzwachiri03@outlook.com"
-              className="inline-flex items-center gap-2 text-[12.5px] font-bold px-4 py-2 rounded-xl text-[#060a0a] flex-shrink-0"
-              style={{
-                background: "linear-gradient(110deg, #22d3ee, #4ade80)",
-              }}
-            >
-              <Mail className="w-3.5 h-3.5" />
-              Get in touch
-            </a>
-          </div>
-        </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="mailto:tafadzwachiri03@outlook.com"
+                className="btn-ghost"
+              >
+                Email me
+              </a>
+              <Link
+                href="/#contact"
+                className="cta"
+              >
+                Start a project{" "}
+                <ArrowRight
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              </Link>
+            </div>
+          </aside>
+        </Reveal>
 
-        {/* ── Prev / Next navigation ──────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-8 border-t border-white/[0.06]">
-          {prevPost ? (
-            <Link
-              href={`/blog/${prevPost.slug}`}
-              className="group flex flex-col gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 hover:border-cyan-400/20 transition-all"
-            >
-              <span className="text-[11px] text-slate-600 inline-flex items-center gap-1">
-                <ArrowLeft className="w-3 h-3" /> Previous
-              </span>
-              <span className="text-[13.5px] font-medium text-slate-300 group-hover:text-white transition-colors leading-snug">
-                {prevPost.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-          {nextPost ? (
-            <Link
-              href={`/blog/${nextPost.slug}`}
-              className="group flex flex-col gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 hover:border-emerald-400/20 transition-all text-right"
-            >
-              <span className="text-[11px] text-slate-600 inline-flex items-center gap-1 justify-end">
-                Next <ArrowRight className="w-3 h-3" />
-              </span>
-              <span className="text-[13.5px] font-medium text-slate-300 group-hover:text-white transition-colors leading-snug">
-                {nextPost.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div>
+        {/* Prev / next */}
+        <Reveal className="mt-5 md:mt-6">
+          <nav
+            aria-label="More posts"
+            className="grid gap-4 sm:grid-cols-2"
+          >
+            {prevPost ? (
+              <Link
+                href={`/blog/${prevPost.slug}`}
+                className="b-line group flex flex-col gap-2 rounded-3xl border p-6 transition-colors hover:border-[var(--cyan)]"
+              >
+                <span className="inline-flex items-center gap-2 text-[.78rem] font-medium uppercase tracking-[.16em] t-muted">
+                  <ArrowLeft
+                    className="h-3.5 w-3.5"
+                    aria-hidden="true"
+                  />
+                  Previous
+                </span>
+                <span className="font-display text-[1.05rem] font-semibold leading-snug tracking-[-0.02em]">
+                  {prevPost.title}
+                </span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {nextPost ? (
+              <Link
+                href={`/blog/${nextPost.slug}`}
+                className="b-line group flex flex-col gap-2 rounded-3xl border p-6 transition-colors hover:border-[var(--cyan)] sm:items-end sm:text-right"
+              >
+                <span className="inline-flex items-center gap-2 text-[.78rem] font-medium uppercase tracking-[.16em] t-muted">
+                  Next
+                  <ArrowRight
+                    className="h-3.5 w-3.5"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="font-display text-[1.05rem] font-semibold leading-snug tracking-[-0.02em]">
+                  {nextPost.title}
+                </span>
+              </Link>
+            ) : (
+              <span />
+            )}
+          </nav>
+        </Reveal>
 
-        {/* ── Back to blog ─────────────────────────────────────────────── */}
-        <div className="pb-16 pt-4 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-[13px] text-slate-500 hover:text-slate-300 transition-colors"
+            className="svc-link inline-flex items-center gap-2 text-[.95rem] font-semibold"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft
+              className="h-4 w-4"
+              aria-hidden="true"
+            />
             Back to all posts
           </Link>
         </div>

@@ -972,3 +972,186 @@ button.chip {
 .proj-details[open] {
   padding-bottom: 0.5rem;
 }
+
+
+
+/* ─── Blog article typography ──────────────────────────────────────────────────
+   Paste into globals.css (replaces the old hardcoded .prose-custom block).
+   Colours come from the site's tokens (--cyan) and from currentColor, so the
+   article follows whatever text colour the page sets. No hardcoded hex values.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.prose-custom {
+  --prose-soft: color-mix(in srgb, currentColor 78%, transparent);
+  --prose-line: color-mix(in srgb, currentColor 14%, transparent);
+  --prose-wash: color-mix(in srgb, currentColor 6%, transparent);
+
+  max-width: 68ch;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  line-height: 1.8;
+  font-weight: 400;
+  color: var(--prose-soft);
+  overflow-wrap: break-word;
+}
+
+/* Headings */
+.prose-custom h2,
+.prose-custom h3,
+.prose-custom h4 {
+  font-family: var(--font-display, inherit);
+  color: currentColor;
+  scroll-margin-top: 6rem;
+  text-wrap: balance;
+}
+.prose-custom h2 {
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin: 3rem 0 0.9rem;
+}
+.prose-custom h3 {
+  font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 2.25rem 0 0.6rem;
+}
+.prose-custom h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+}
+.prose-custom > :first-child {
+  margin-top: 0;
+}
+
+/* Text */
+.prose-custom p {
+  margin: 0 0 1.35rem;
+}
+.prose-custom strong {
+  color: currentColor;
+  font-weight: 600;
+}
+.prose-custom em {
+  font-style: italic;
+}
+.prose-custom a {
+  color: var(--cyan);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+.prose-custom a:hover {
+  opacity: 0.8;
+}
+.prose-custom a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Lists */
+.prose-custom ul,
+.prose-custom ol {
+  margin: 0 0 1.35rem;
+  padding-left: 1.5rem;
+}
+.prose-custom ul {
+  list-style: disc;
+}
+.prose-custom ol {
+  list-style: decimal;
+}
+.prose-custom li {
+  margin-bottom: 0.45rem;
+  padding-left: 0.25rem;
+}
+.prose-custom li::marker {
+  color: var(--cyan);
+}
+
+/* Code */
+.prose-custom code {
+  background: var(--prose-wash);
+  border: 1px solid var(--prose-line);
+  border-radius: 6px;
+  padding: 0.12rem 0.4rem;
+  font-size: 0.86em;
+  color: var(--cyan);
+}
+.prose-custom pre {
+  background: var(--prose-wash);
+  border: 1px solid var(--prose-line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 0 0 1.75rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: currentColor;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-custom pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Quote */
+.prose-custom blockquote {
+  border-left: 2px solid var(--cyan);
+  padding: 0.1rem 0 0.1rem 1.35rem;
+  margin: 1.75rem 0;
+  font-style: italic;
+  color: currentColor;
+}
+.prose-custom blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Media + tables */
+.prose-custom img,
+.prose-custom video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--prose-line);
+  margin: 1.75rem 0;
+}
+.prose-custom figcaption {
+  margin-top: -1rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+.prose-custom table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 0 0 1.75rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-custom th,
+.prose-custom td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--prose-line);
+  text-align: left;
+}
+.prose-custom th {
+  font-weight: 600;
+  color: currentColor;
+}
+
+/* Divider */
+.prose-custom hr {
+  border: none;
+  height: 1px;
+  background: var(--prose-line);
+  margin: 2.5rem 0;
+}
