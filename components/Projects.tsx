@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Reveal from "./Reveal";
 
+type Variant = "shop" | "clinic" | "build" | "cidb" | "gate";
+
 type Project = {
   name: string;
   category: string;
@@ -13,26 +15,11 @@ type Project = {
   points: string[];
   tags: string[];
   status: { label: string; live: boolean };
-  variant: "shop" | "clinic";
+  variant: Variant;
   image?: string; // optional real screenshot in /public, e.g. "/projects/offline-house.png"
 };
 
 const PROJECTS: Project[] = [
-  {
-    name: "Offline House",
-    category: "E-commerce",
-    url: "https://www.offlinehouse.co.za/",
-    display: "offlinehouse.co.za",
-    desc: "An online store for top-selling tech, home and everyday essentials, with a mega menu, instant search, wishlist, bag and order tracking, all priced in rand.",
-    points: [
-      "Full storefront with collections, filters and best-seller sorting",
-      "Search with a keyboard shortcut, wishlist and shopping bag",
-      "Delivery, returns and order-tracking pages built in",
-    ],
-    tags: ["Next.js", "E-commerce", "SEO", "Responsive"],
-    status: { label: "Opening soon", live: false },
-    variant: "shop",
-  },
   {
     name: "Devine Medical Group",
     category: "Healthcare website",
@@ -47,6 +34,66 @@ const PROJECTS: Project[] = [
     tags: ["Next.js", "Local SEO", "WhatsApp", "Responsive"],
     status: { label: "Live", live: true },
     variant: "clinic",
+  },
+  {
+    name: "Joepro Construction",
+    category: "Construction website",
+    url: "https://www.joepro.co.za/",
+    display: "joepro.co.za",
+    desc: "A website for a Shallcross building and roofing contractor, built to win local searches and turn visitors into quote requests across ten trades.",
+    points: [
+      "Dedicated services and projects pages written for local search",
+      "Free-quote form with one-tap call and WhatsApp",
+      "Google reviews, FAQ and map details for Shallcross, Durban",
+    ],
+    tags: ["Next.js", "Local SEO", "Quote form", "Responsive"],
+    status: { label: "Live", live: true },
+    variant: "build",
+  },
+  {
+    name: "TtFRECH Renovators & Investments",
+    category: "Construction company website",
+    url: "https://www.ttfrech.co.za/",
+    display: "ttfrech.co.za",
+    desc: "A website for a CIDB-registered Durban construction company, built to earn trust with 15+ years of proof and turn visitors into free-quote requests across KwaZulu-Natal.",
+    points: [
+      "Pages for six services, reviews, FAQ and a blog, tuned for local search",
+      "Quote assistant chat plus one-tap call and a free-quote flow",
+      "Service-area coverage from Durban to Ballito, Verulam and Umhlanga",
+    ],
+    tags: ["Next.js", "AI assistant", "Local SEO", "Responsive"],
+    status: { label: "Live", live: true },
+    variant: "cidb",
+  },
+  {
+    name: "OP Garage & Gate Repairs",
+    category: "Home security website",
+    url: "https://opgaragegaterepairs-one.vercel.app/",
+    display: "opgaragegaterepairs-one.vercel.app",
+    desc: "A lead-focused site for a Durban garage door, gate motor and electric fence specialist, where every service leads to a ready-to-send WhatsApp quote.",
+    points: [
+      "A page for each of six services, plus FAQ, blog and contact",
+      "Pre-filled WhatsApp quote buttons and tap-to-call",
+      "Customer reviews and Google Maps directions for Durban",
+    ],
+    tags: ["Next.js", "WhatsApp", "Local SEO", "Responsive"],
+    status: { label: "Preview", live: false },
+    variant: "gate",
+  },
+  {
+    name: "Offline House",
+    category: "E-commerce",
+    url: "https://www.offlinehouse.co.za/",
+    display: "offlinehouse.co.za",
+    desc: "An online store for top-selling tech, home and everyday essentials, with a mega menu, instant search, wishlist, bag and order tracking, all priced in rand.",
+    points: [
+      "Full storefront with collections, filters and best-seller sorting",
+      "Search with a keyboard shortcut, wishlist and shopping bag",
+      "Delivery, returns and order-tracking pages built in",
+    ],
+    tags: ["Next.js", "E-commerce", "SEO", "Responsive"],
+    status: { label: "Opening soon", live: false },
+    variant: "shop",
   },
 ];
 
@@ -159,6 +206,207 @@ function ClinicMock() {
   );
 }
 
+function BuildMock() {
+  const stats = [
+    ["5+", "Years"],
+    ["10", "Services"],
+    ["Durban", "Shallcross"],
+  ];
+  return (
+    <div
+      className="flex h-full flex-col text-[#1c1c1a]"
+      style={{ background: "#f3f4f2" }}
+    >
+      <div
+        className="flex items-center justify-between px-[4cqw] py-[2.2cqw]"
+        style={fs(2.6)}
+      >
+        <b
+          className="tracking-[.12em]"
+          style={fs(3.2)}
+        >
+          JOEPRO
+        </b>
+        <span className="flex items-center gap-[3cqw]">
+          <span className="flex gap-[3cqw] opacity-60">
+            <span>Services</span>
+            <span>Projects</span>
+            <span>About</span>
+          </span>
+          <span
+            className="rounded-full px-[2.6cqw] py-[1cqw] text-[#f3f4f2]"
+            style={{ background: "#1c1c1a" }}
+          >
+            Get a quote
+          </span>
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col justify-center gap-[2cqw] px-[4cqw]">
+        <span
+          className="uppercase tracking-[.2em] opacity-60"
+          style={fs(2.1)}
+        >
+          Building and roofing contractor
+        </span>
+        <span
+          className="max-w-[78%] font-semibold leading-[1.02] tracking-tight"
+          style={fs(7.2)}
+        >
+          Brickwork to roofing, done right in Durban.
+        </span>
+        <div className="mt-[1.5cqw] flex items-stretch gap-[2cqw]">
+          {stats.map(([v, l]) => (
+            <span
+              key={l}
+              className="flex flex-col rounded-[1.2cqw] border border-[#1c1c1a]/15 bg-white px-[2.4cqw] py-[1.4cqw]"
+              style={fs(2.1)}
+            >
+              <b style={fs(3.8)}>{v}</b>
+              <span className="opacity-60">{l}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CidbMock() {
+  const stats = [
+    ["15+", "Years"],
+    ["320+", "Projects"],
+    ["98%", "Satisfied"],
+    ["40+", "Craftspeople"],
+  ];
+  return (
+    <div
+      className="flex h-full flex-col text-white"
+      style={{ background: "#14171c" }}
+    >
+      <div
+        className="flex items-center justify-between px-[4cqw] py-[2.2cqw]"
+        style={fs(2.6)}
+      >
+        <b style={fs(3)}>TtFRECH</b>
+        <span className="flex items-center gap-[3cqw]">
+          <span className="flex gap-[3cqw] opacity-70">
+            <span>About</span>
+            <span>Services</span>
+            <span>Reviews</span>
+          </span>
+          <span
+            className="rounded-[.8cqw] px-[2.6cqw] py-[1cqw] font-semibold text-[#14171c]"
+            style={{ background: "#f59e0b" }}
+          >
+            Get a Free Quote
+          </span>
+        </span>
+      </div>
+      <div
+        className="flex flex-1 flex-col justify-center gap-[2cqw] px-[4cqw]"
+        style={{
+          background:
+            "radial-gradient(110% 90% at 0% 100%, rgba(245,158,11,.2), transparent 60%)",
+        }}
+      >
+        <span
+          className="uppercase tracking-[.2em]"
+          style={{ ...fs(2.1), color: "#f59e0b" }}
+        >
+          CIDB Registered · Durban, KZN
+        </span>
+        <span
+          className="max-w-[80%] font-semibold leading-[1.02] tracking-tight"
+          style={fs(7.2)}
+        >
+          We Build Structures That Endure.
+        </span>
+        <div className="mt-[1.5cqw] grid grid-cols-4 gap-[2cqw]">
+          {stats.map(([v, l]) => (
+            <span
+              key={l}
+              className="flex flex-col rounded-[1.2cqw] border border-white/10 bg-white/5 px-[2cqw] py-[1.4cqw]"
+              style={fs(2.1)}
+            >
+              <b style={{ ...fs(3.8), color: "#f59e0b" }}>{v}</b>
+              <span className="opacity-70">{l}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GateMock() {
+  const chips = ["Fast repairs", "24/7 support", "Flexible appointments"];
+  return (
+    <div
+      className="flex h-full flex-col text-white"
+      style={{ background: "#06241b" }}
+    >
+      <div
+        className="flex items-center justify-between px-[4cqw] py-[2.2cqw]"
+        style={fs(2.6)}
+      >
+        <b style={fs(3)}>Garage &amp; Gate Repairs</b>
+        <span className="flex items-center gap-[3cqw]">
+          <span className="flex gap-[3cqw] opacity-70">
+            <span>Services</span>
+            <span>FAQ</span>
+            <span>Contact</span>
+          </span>
+          <span
+            className="rounded-full px-[2.6cqw] py-[1cqw] font-semibold text-[#06241b]"
+            style={{ background: "#34d399" }}
+          >
+            Get a quote
+          </span>
+        </span>
+      </div>
+      <div
+        className="flex flex-1 flex-col justify-center gap-[2cqw] px-[4cqw]"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 100% 0%, rgba(52,211,153,.22), transparent 60%)",
+        }}
+      >
+        <span
+          className="uppercase tracking-[.2em] opacity-70"
+          style={fs(2.1)}
+        >
+          Garage doors · Gate motors · Electric fences
+        </span>
+        <span
+          className="max-w-[80%] font-semibold leading-[1.02] tracking-tight"
+          style={fs(7.2)}
+        >
+          Get your garage door or gate fixed
+        </span>
+        <div className="mt-[1.5cqw] flex flex-wrap gap-[1.6cqw]">
+          {chips.map((c) => (
+            <span
+              key={c}
+              className="rounded-full bg-white/10 px-[2.6cqw] py-[1.2cqw]"
+              style={fs(2.1)}
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const MOCKS: Record<Variant, () => React.JSX.Element> = {
+  shop: ShopMock,
+  clinic: ClinicMock,
+  build: BuildMock,
+  cidb: CidbMock,
+  gate: GateMock,
+};
+
 const Check = () => (
   <svg
     className="mt-[.28rem] shrink-0"
@@ -253,132 +501,137 @@ export default function Projects() {
         </Reveal>
         <Reveal delay={0.12}>
           <p className="max-w-md text-[clamp(1rem,1.5vw,1.15rem)] t-muted">
-            From an online store to a healthcare website. Each one is fast,
-            responsive and ready to be found.
+            From healthcare and construction to home security and online stores.
+            Each one is fast, responsive and ready to be found.
           </p>
         </Reveal>
       </div>
 
       {/* Project cards */}
       <div className="mt-12 flex flex-col gap-5 md:mt-16 md:gap-6">
-        {PROJECTS.map((p, i) => (
-          <Reveal key={p.name}>
-            <article
-              className="svc grid gap-8 p-5 md:grid-cols-2 md:items-center md:gap-14 md:p-10 lg:p-12"
-              onMouseMove={onMove}
-            >
-              {/* Text */}
-              <div className="relative flex flex-col items-start gap-5">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span
-                    className="font-display text-sm font-medium"
-                    style={{ color: "var(--cyan)" }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-[.78rem] font-medium uppercase tracking-[.16em] t-muted">
-                    {p.category}
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border b-line px-3 py-1 text-[.75rem] font-medium t-muted">
+        {PROJECTS.map((p, i) => {
+          const Mock = MOCKS[p.variant];
+          return (
+            <Reveal key={p.name}>
+              <article
+                className="svc grid gap-8 p-5 md:grid-cols-2 md:items-center md:gap-14 md:p-10 lg:p-12"
+                onMouseMove={onMove}
+              >
+                {/* Text */}
+                <div className="relative flex flex-col items-start gap-5">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{
-                        background: p.status.live ? "#22c55e" : "var(--orange)",
-                      }}
-                    />
-                    {p.status.label}
-                  </span>
+                      className="font-display text-sm font-medium"
+                      style={{ color: "var(--cyan)" }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-[.78rem] font-medium uppercase tracking-[.16em] t-muted">
+                      {p.category}
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-full border b-line px-3 py-1 text-[.75rem] font-medium t-muted">
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{
+                          background: p.status.live
+                            ? "#22c55e"
+                            : "var(--orange)",
+                        }}
+                      />
+                      {p.status.label}
+                    </span>
+                  </div>
+
+                  <h3 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
+                    {p.name}
+                  </h3>
+                  <p className="max-w-[48ch] t-muted">{p.desc}</p>
+
+                  <ul className="grid gap-2.5 text-[.95rem]">
+                    {p.points.map((pt) => (
+                      <li
+                        key={pt}
+                        className="flex gap-3"
+                      >
+                        <Check />
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <ul className="flex flex-wrap gap-2">
+                    {p.tags.map((t) => (
+                      <li
+                        key={t}
+                        className="rounded-full border b-line px-3 py-1 text-[.78rem] font-medium t-muted"
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${p.name} (opens in a new tab)`}
+                    className="svc-link inline-flex w-fit items-center gap-2 pt-1 text-[.95rem] font-semibold"
+                  >
+                    Visit {p.display} <ArrowUpRight />
+                  </a>
                 </div>
 
-                <h3 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
-                  {p.name}
-                </h3>
-                <p className="max-w-[48ch] t-muted">{p.desc}</p>
-
-                <ul className="grid gap-2.5 text-[.95rem]">
-                  {p.points.map((pt) => (
-                    <li
-                      key={pt}
-                      className="flex gap-3"
-                    >
-                      <Check />
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <ul className="flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <li
-                      key={t}
-                      className="rounded-full border b-line px-3 py-1 text-[.78rem] font-medium t-muted"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href={p.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visit ${p.name} (opens in a new tab)`}
-                  className="svc-link inline-flex w-fit items-center gap-2 pt-1 text-[.95rem] font-semibold"
+                {/* Browser mockup */}
+                <div
+                  className={`relative ${i % 2 ? "md:order-first" : ""}`}
+                  onMouseMove={tilt}
+                  onMouseLeave={untilt}
                 >
-                  Visit {p.display} <ArrowUpRight />
-                </a>
-              </div>
-
-              {/* Browser mockup */}
-              <div
-                className={`relative ${i % 2 ? "md:order-first" : ""}`}
-                onMouseMove={tilt}
-                onMouseLeave={untilt}
-              >
-                <div className="proj-mock">
-                  <div className="frame">
-                    <div
-                      className="frame-bar"
+                  <div className="proj-mock">
+                    <div className="frame">
+                      <div
+                        className="frame-bar"
+                        aria-hidden="true"
+                      >
+                        <i />
+                        <i />
+                        <i />
+                        <span>{p.display}</span>
+                      </div>
+                      <div className="frame-body">
+                        {p.image ? (
+                          <Image
+                            src={p.image}
+                            alt={`${p.name} website screenshot`}
+                            fill
+                            sizes="(min-width: 768px) 50vw, 100vw"
+                            className="object-cover object-top"
+                          />
+                        ) : (
+                          <Mock />
+                        )}
+                      </div>
+                    </div>
+                    <span
+                      className="float-chip"
                       aria-hidden="true"
                     >
-                      <i />
-                      <i />
-                      <i />
-                      <span>{p.display}</span>
-                    </div>
-                    <div className="frame-body">
-                      {p.image ? (
-                        <Image
-                          src={p.image}
-                          alt={`${p.name} website screenshot`}
-                          fill
-                          sizes="(min-width: 768px) 50vw, 100vw"
-                          className="object-cover object-top"
-                        />
-                      ) : p.variant === "shop" ? (
-                        <ShopMock />
-                      ) : (
-                        <ClinicMock />
-                      )}
-                    </div>
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{
+                          background: p.status.live
+                            ? "#22c55e"
+                            : "var(--orange)",
+                        }}
+                      />
+                      {p.status.live ? "Live site" : "Launching soon"}
+                    </span>
                   </div>
-                  <span
-                    className="float-chip"
-                    aria-hidden="true"
-                  >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{
-                        background: p.status.live ? "#22c55e" : "var(--orange)",
-                      }}
-                    />
-                    {p.status.live ? "Live site" : "Launching soon"}
-                  </span>
                 </div>
-              </div>
-            </article>
-          </Reveal>
-        ))}
+              </article>
+            </Reveal>
+          );
+        })}
       </div>
 
       {/* Closing nudge */}
