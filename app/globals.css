@@ -1155,3 +1155,354 @@ button.chip {
   background: var(--prose-line);
   margin: 2.5rem 0;
 }
+
+
+
+
+/* ─── Digital business card (/card) ─────────────────────────────────────────────
+   Append to globals.css. Uses your tokens (--cyan, --orange) and currentColor,
+   so there are no hardcoded theme colours. Everything is prefixed `dc-`.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@property --dc-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.dc-stage {
+  --dc-line: color-mix(in srgb, currentColor 14%, transparent);
+  --dc-wash: color-mix(in srgb, currentColor 6%, transparent);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: clamp(1.25rem, 4vw, 3rem) 1rem;
+  overflow: hidden;
+}
+
+/* Background: drifting glows + faded grid */
+.dc-blob {
+  position: absolute;
+  z-index: -1;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: dc-drift 22s ease-in-out infinite;
+}
+.dc-blob--a {
+  width: min(70vw, 34rem);
+  top: -14%;
+  left: -12%;
+  background: var(--cyan);
+  opacity: 0.3;
+}
+.dc-blob--b {
+  width: min(60vw, 30rem);
+  bottom: -16%;
+  right: -12%;
+  background: var(--orange);
+  opacity: 0.22;
+  animation-duration: 28s;
+  animation-delay: -9s;
+}
+.dc-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, currentColor 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, currentColor 6%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 25%, transparent 78%);
+}
+
+/* The card: glass, animated gradient border, cursor glow, gentle tilt */
+.dc-card {
+  position: relative;
+  width: min(100%, 26rem);
+  padding: clamp(1.5rem, 5vw, 2.1rem);
+  border-radius: 2rem;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+.dc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--dc-angle),
+    var(--cyan),
+    transparent 25%,
+    var(--orange) 50%,
+    transparent 75%,
+    var(--cyan)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: dc-spin 9s linear infinite;
+  pointer-events: none;
+}
+.dc-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    22rem circle at var(--cx, 50%) var(--cy, 0%),
+    color-mix(in srgb, var(--cyan) 16%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.dc-card:hover::after {
+  opacity: 1;
+}
+
+/* Entrance: staggered rise (set --i on each element) */
+.dc-in {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+  animation: dc-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+}
+
+/* Avatar: rotating ring + status dot */
+.dc-avatar {
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-inline: auto;
+}
+.dc-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from var(--dc-angle), var(--cyan), var(--orange), var(--cyan));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation: dc-spin 6s linear infinite;
+}
+.dc-avatar-inner {
+  position: absolute;
+  inset: 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dc-wash);
+  font-size: 1.9rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.dc-status {
+  position: absolute;
+  right: 0.35rem;
+  bottom: 0.35rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 10%, transparent);
+}
+.dc-status::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: dc-pulse 2s ease-out infinite;
+}
+
+/* Chips */
+.dc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--dc-line);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Wide buttons (works with your .cta and .btn-ghost) */
+.dc-wide {
+  display: inline-flex;
+  width: 100%;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.dc-shine {
+  position: relative;
+  overflow: hidden;
+}
+.dc-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: dc-sheen 4.5s ease-in-out 1.5s infinite;
+  pointer-events: none;
+}
+
+/* Quick-action tiles */
+.dc-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 0.5rem;
+  border: 1px solid var(--dc-line);
+  border-radius: 1.25rem;
+  background: var(--dc-wash);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.dc-ic {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--cyan) 14%, transparent);
+  color: var(--cyan);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dc-tile:hover,
+.dc-row:hover {
+  transform: translateY(-3px);
+  border-color: var(--cyan);
+}
+.dc-tile:hover .dc-ic,
+.dc-row:hover .dc-ic {
+  transform: scale(1.1) rotate(-6deg);
+}
+.dc-tile:active,
+.dc-row:active {
+  transform: scale(0.97);
+}
+
+/* Social rows */
+.dc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--dc-line);
+  border-radius: 1.15rem;
+  background: var(--dc-wash);
+  transition: transform 0.25s, border-color 0.25s;
+}
+.dc-row .dc-arrow {
+  margin-left: auto;
+  opacity: 0.5;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.dc-row:hover .dc-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+  color: var(--cyan);
+}
+
+.dc-tile:focus-visible,
+.dc-row:focus-visible,
+.dc-share:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* Share button */
+.dc-share {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--dc-line);
+  border-radius: 9999px;
+  background: var(--dc-wash);
+  transition: border-color 0.25s, transform 0.25s;
+}
+.dc-share:hover {
+  border-color: var(--cyan);
+  transform: scale(1.06);
+}
+
+@keyframes dc-spin {
+  to {
+    --dc-angle: 360deg;
+  }
+}
+@keyframes dc-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dc-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(5%, 7%) scale(1.12);
+  }
+}
+@keyframes dc-sheen {
+  0%,
+  55% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+@keyframes dc-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-blob,
+  .dc-card::before,
+  .dc-avatar::before,
+  .dc-status::after,
+  .dc-shine::after {
+    animation: none !important;
+  }
+  .dc-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .dc-card {
+    transform: none !important;
+  }
+}
